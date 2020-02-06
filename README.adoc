@@ -1,0 +1,55 @@
+= KFSM Visualization
+
+This project will explore many ways to visualize KFSM definitions.
+
+== Generated Samples
+
+=== Plantuml
+
+==== Turnstile FSM
+
+[source,kotlin]
+----
+include::src/test/kotlin/Turnstile.kt[]
+----
+
+[plantuml,"Turnstile FSM"]
+----
+include::generated/turnstile.plantuml[]
+----
+
+==== Paying Turnstile FSM
+
+[source,kotlin]
+----
+include::src/test/kotlin/PayingTurnstile.kt[]
+----
+
+[plantuml,"Paying Turnstile FSM"]
+----
+include::generated/paying-turnstile.plantuml[]
+----
+
+==== Secure Turnstile FSM
+
+[source,kotlin]
+----
+include::src/test/kotlin/SecureTurnstile.kt[]
+----
+
+[plantuml,"Secure Turnstile FSM"]
+----
+include::generated/secure-turnstile.plantuml[]
+----
+
+==== Packer Reader FSM
+
+[source,kotlin]
+----
+include::src/test/kotlin/PacketReader.kt[]
+----
+
+[plantuml,"Packet Reader FSM"]
+----
+include::generated/packet-reader.plantuml[]
+----
