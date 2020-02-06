@@ -1,6 +1,8 @@
 @startuml
-[*] --> LOCKED
-LOCKED --> UNLOCKED : COIN
-UNLOCKED --> LOCKED : PASS
-UNLOCKED --> UNLOCKED : COIN
+state default {
+  [*] --> LOCKED
+  LOCKED --> UNLOCKED : COIN
+  UNLOCKED --> LOCKED : PASS
+  UNLOCKED --> UNLOCKED : COIN
+}
 @enduml
