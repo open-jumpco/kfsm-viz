@@ -8,36 +8,24 @@ This project will explore many ways to visualize KFSM definitions.
 
 ==== Turnstile FSM
 
-[source,kotlin]
-----
-include::./src/test/kotlin/Turnstile.kt[]
-----
+link:./src/test/kotlin/Turnstile.kt[Turnstile.kt]
 
 image::turnstile.png[]
 
 ==== Paying Turnstile FSM
 
-[source,kotlin]
-----
-include::./src/test/kotlin/PayingTurnstile.kt[]
-----
+link:./src/test/kotlin/PayingTurnstile.kt[PayingTurnstile.kt]
 
 image::paying_turnstile.png[]
 
 ==== Secure Turnstile FSM
 
-[source,kotlin]
-----
-include::./src/test/kotlin/SecureTurnstile.kt[]
-----
+link:./src/test/kotlin/SecureTurnstile.kt[SecureTurnstile.kt]
 
 image::secure_turnstile.png[]
 
 ==== Packer Reader FSM
 
-[source,kotlin]
-----
-include::./src/test/kotlin/PacketReader.kt[]
-----
+link:./src/test/kotlin/PacketReader.kt[PacketReader.kt]
 
 image::packet_reader.png[]
