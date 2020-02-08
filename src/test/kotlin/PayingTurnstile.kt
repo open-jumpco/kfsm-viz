@@ -144,19 +144,16 @@ class PayingTurnstileFSM(
             stateMap("coins", setOf(PayingTurnstileStates.COINS)) {
                 whenState(PayingTurnstileStates.COINS) {
                     automaticPop(PayingTurnstileStates.UNLOCKED, guard = { coins > requiredCoins }) {
-                        println("automaticPop:returnCoin")
                         returnCoin(coins - requiredCoins)
                         unlock()
                         reset()
                     }
                     automaticPop(PayingTurnstileStates.UNLOCKED, guard = { coins == requiredCoins }) {
-                        println("automaticPop")
                         unlock()
                         reset()
                     }
                     onEvent(PayingTurnstileEvents.COIN) { value -> require(value != null) { "argument required for COIN" }
                         coin(value)
-                        println("Coins=$coins")
                         if (coins < requiredCoins) {
                             println("Please add ${requiredCoins - coins}")
                         }
@@ -175,7 +172,6 @@ class PayingTurnstileFSM(
                     guard = { value -> require(value != null) { "argument required for COIN" }
                         value + coins < requiredCoins
                     }) { value -> require(value != null) { "argument required for COIN" }
-                    println("PUSH TRANSITION")
                     coin(value)
                     println("Coins=$coins, Please add ${requiredCoins - coins}")
                 }

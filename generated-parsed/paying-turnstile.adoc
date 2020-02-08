@@ -1,0 +1,84 @@
+= PayingTurnstileFSM State Chart
+
+== State Map coins
+
+|===
+| Start | Event[Guard] | Target | Action
+
+| COINS
+| \<<automatic>> `[{coins > requiredCoins}]`
+| UNLOCKED
+|  `{ returnCoin(coins-requiredCoins) unlock() reset() }`
+
+| COINS
+| \<<automatic>> `[{coins == requiredCoins}]`
+| UNLOCKED
+|  `{ unlock() reset() }`
+
+| COINS
+| COIN
+| COINS
+|  `{value->require(value != null){"argument required for COIN"} coin(value) if(coins < requiredCoins){ println("Please add ${requiredCoins-coins}") } }`
+|===
+
+== Default State Map
+
+|===
+| Start | Event[Guard] | Target | Action
+
+| coins
+| \<<unknown>>
+| coins
+|  `{ automaticPop(PayingTurnstileStates.UNLOCKED,guard={coins > requiredCoins}){ returnCoin(coins-requiredCoins) unlock() reset() } automaticPop(PayingTurnstileStates.UNLOCKED,guard={coins == requiredCoins}){ unlock() reset() } onEvent(PayingTurnstileEvents.COIN){value->require(value != null){"argument required for COIN"} coin(value) if(coins < requiredCoins){ println("Please add ${requiredCoins-coins}") } } }`
+
+| coins
+| \<<automatic>> `[{coins > requiredCoins}]`
+| UNLOCKED
+|  `{ returnCoin(coins-requiredCoins) unlock() reset() }`
+
+| coins
+| \<<automatic>> `[{coins == requiredCoins}]`
+| UNLOCKED
+|  `{ unlock() reset() }`
+
+| coins
+| COIN
+| coins
+|  `{value->require(value != null){"argument required for COIN"} coin(value) if(coins < requiredCoins){ println("Please add ${requiredCoins-coins}") } }`
+
+| COINS
+| \<<automatic>> `[{coins > requiredCoins}]`
+| UNLOCKED
+|  `{ returnCoin(coins-requiredCoins) unlock() reset() }`
+
+| COINS
+| \<<automatic>> `[{coins == requiredCoins}]`
+| UNLOCKED
+|  `{ unlock() reset() }`
+
+| COINS
+| COIN
+| COINS
+|  `{value->require(value != null){"argument required for COIN"} coin(value) if(coins < requiredCoins){ println("Please add ${requiredCoins-coins}") } }`
+
+| LOCKED
+| COIN
+| COINS
+|  `{value->require(value != null){"argument required for COIN"} coin(value) unlock() reset() }`
+
+| LOCKED
+| COIN `[{value->require(value != null){"argument required for COIN"}value+coins < requiredCoins}]`
+| COINS
+|  `{value->require(value != null){"argument required for COIN"} coin(value) println("Coins=$coins, Please add ${requiredCoins-coins}") }`
+
+| UNLOCKED
+| COIN
+| UNLOCKED
+|  `{value->require(value != null){"argument required for COIN"} returnCoin(coin(value)) }`
+
+| UNLOCKED
+| PASS
+| LOCKED
+|  `{ lock() }`
+|===
+

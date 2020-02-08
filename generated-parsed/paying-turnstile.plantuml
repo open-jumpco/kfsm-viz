@@ -1,0 +1,20 @@
+@startuml
+state coins {
+COINS --> UNLOCKED : <<automatic>>[{coins > requiredCoins}] :: { returnCoin(coins-requiredCoins) unlock() reset() }
+COINS --> UNLOCKED : <<automatic>>[{coins == requiredCoins}] :: { unlock() reset() }
+COINS --> COINS : COIN :: {value->require(value != null){"argument required for COIN"} coin(value) if(coins < requiredCoins){ println("Please add ${requiredCoins-coins}") } }
+}
+state default {
+coins --> coins : <<unknown>> :: { automaticPop(PayingTurnstileStates.UNLOCKED,guard={coins > requiredCoins}){ returnCoin(coins-requiredCoins) unlock() reset() } automaticPop(PayingTurnstileStates.UNLOCKED,guard={coins == requiredCoins}){ unlock() reset() } onEvent(PayingTurnstileEvents.COIN){value->require(value != null){"argument required for COIN"} coin(value) if(coins < requiredCoins){ println("Please add ${requiredCoins-coins}") } } }
+coins --> UNLOCKED : <<automatic>>[{coins > requiredCoins}] :: { returnCoin(coins-requiredCoins) unlock() reset() }
+coins --> UNLOCKED : <<automatic>>[{coins == requiredCoins}] :: { unlock() reset() }
+coins --> coins : COIN :: {value->require(value != null){"argument required for COIN"} coin(value) if(coins < requiredCoins){ println("Please add ${requiredCoins-coins}") } }
+COINS --> UNLOCKED : <<automatic>>[{coins > requiredCoins}] :: { returnCoin(coins-requiredCoins) unlock() reset() }
+COINS --> UNLOCKED : <<automatic>>[{coins == requiredCoins}] :: { unlock() reset() }
+COINS --> COINS : COIN :: {value->require(value != null){"argument required for COIN"} coin(value) if(coins < requiredCoins){ println("Please add ${requiredCoins-coins}") } }
+LOCKED --> COINS : COIN :: {value->require(value != null){"argument required for COIN"} coin(value) unlock() reset() }
+LOCKED --> COINS : COIN[{value->require(value != null){"argument required for COIN"}value+coins < requiredCoins}] :: {value->require(value != null){"argument required for COIN"} coin(value) println("Coins=$coins, Please add ${requiredCoins-coins}") }
+UNLOCKED --> UNLOCKED : COIN :: {value->require(value != null){"argument required for COIN"} returnCoin(coin(value)) }
+UNLOCKED --> LOCKED : PASS :: { lock() }
+}
+@enduml

@@ -1,6 +1,6 @@
 @startuml
 state coins {
-  COINS --> COINS : COIN
+  COINS --> COINS : COIN [{ returnCoin() }]
   COINS --> COINS
 }
 state default {

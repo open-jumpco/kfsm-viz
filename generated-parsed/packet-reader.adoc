@@ -1,0 +1,83 @@
+= PacketReaderFSM State Chart
+
+== Default State Map
+
+|===
+| Start | Event[Guard] | Target | Action
+
+| [*]
+| CTRL `[{byte->byte == CharacterConstants.SOH}]`
+| RCVPCKT
+| 
+
+| RCVPCKT
+| CTRL `[{byte->byte == CharacterConstants.STX}]`
+| RCVDATA
+|  `{  addField()  }`
+
+| RCVPCKT
+| BYTE
+| RCVCHK
+|  `{byte->  require(byte != null)  addChecksum(byte)  }`
+
+| RCVDATA
+| BYTE
+| RCVDATA
+|  `{byte->  require(byte != null)  addByte(byte)  }`
+
+| RCVDATA
+| CTRL `[{byte->byte == CharacterConstants.ETX}]`
+| RCVPCKT
+|  `{  endField()  }`
+
+| RCVDATA
+| ESC
+| RCVESC
+| 
+
+| RCVESC
+| ESC
+| RCVDATA
+|  `{  addByte(CharacterConstants.ESC)  }`
+
+| RCVESC
+| CTRL
+| RCVDATA
+|  `{byte->  require(byte != null)  addByte(byte)  }`
+
+| RCVCHK
+| BYTE
+| RCVCHK
+|  `{byte->  require(byte != null)  addChecksum(byte)  }`
+
+| RCVCHK
+| ESC
+| RCVCHKESC
+| 
+
+| RCVCHK
+| CTRL `[{byte->byte == CharacterConstants.EOT}]`
+| CHKSUM
+|  `{  checksum()  }`
+
+| CHKSUM
+| \<<automatic>> `[{!checksumValid}]`
+| [*]
+|  `{  sendNACK()  }`
+
+| CHKSUM
+| \<<automatic>> `[{checksumValid}]`
+| [*]
+|  `{  sendACK()  }`
+
+| RCVCHKESC
+| ESC
+| RCVCHK
+|  `{  addChecksum(CharacterConstants.ESC)  }`
+
+| RCVCHKESC
+| CTRL
+| RCVCHK
+|  `{byte->  require(byte != null)  addChecksum(byte)  }`
+|===
+
