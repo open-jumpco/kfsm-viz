@@ -175,10 +175,22 @@ fun asciiDoc(statemachine: VisualStateMachineDefinion): String {
     return sw.toString()
 }
 
+fun escapeCharacters(input: String, escape: String): String {
+    val builder = StringBuilder()
+    input.forEach { c ->
+        if (escape.contains(c)) {
+            builder.append('\\')
+        }
+        builder.append(c)
+    }
+    return builder.toString()
+}
+
 fun printAsciiDocTransition(transition: VisualTransition, output: PrintWriter) {
     output.println()
     val startName = if (transition.type == DEFAULT) transition.startMap else
-        if ("\\<<start>>" == transition.start || "START" == transition.start) "[*]" else transition.start ?: "\\<<unknown>>"
+        if ("\\<<start>>" == transition.start || "START" == transition.start) "[*]" else transition.start
+            ?: "\\<<unknown>>"
     val endName = if ("\\<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
         ?: transition.start ?: "\\<<unkown>>"
     val event = if (transition.automatic) "\\<<automatic>>" else transition.event ?: "\\<<unknown>>"
@@ -188,14 +200,14 @@ fun printAsciiDocTransition(transition: VisualTransition, output: PrintWriter) {
     }
     if (transition.guard != null) {
         val guard = transition.guard!!.replace("\n", "").replace("\r", "")
-        output.print(" `[$guard]`")
+        output.print(escapeCharacters(" `[$guard]`", "|"))
     }
     output.println()
     output.println("| $endName")
     output.print("| ")
     if (transition.action != null && transition?.action?.trim() != "{}") {
         val action = transition?.action?.replace("\n", " ")?.replace("\r", " ")
-        output.print(" `$action`")
+        output.print(escapeCharacters(" `$action`", "|"))
     }
     output.println()
 }

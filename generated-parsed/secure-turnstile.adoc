@@ -16,7 +16,7 @@
 |  `{ activateOverride() }`
 
 | LOCKED
-| CARD `[{cardId->requireNotNull(cardId)overrideActive||isValidCard(cardId)}]`
+| CARD `[{cardId->requireNotNull(cardId)overrideActive\|\|isValidCard(cardId)}]`
 | UNLOCKED
 |  `{ unlock() }`
 
