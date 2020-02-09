@@ -17,7 +17,7 @@ private fun printPlantUmlTransition(transition: VisualTransition, output: PrintW
     }
     if (transition.guard != null) {
         val guard = transition.guard!!.replace("\n", "\\l").replace("\r", "")
-        output.print("\\l[$guard]")
+        output.print(" [$guard]")
     }
 
     if (transition.action != null && transition?.action?.trim() != "{}") {
