@@ -1,12 +1,8 @@
 package io.jumpco.open.example.kfsm
 
-import PacketReaderFSM
-import io.jumpco.open.kfsm.PayingTurnstileFSM
-import io.jumpco.open.kfsm.SecureTurnstileFSM
 import io.jumpco.open.kfsm.asciiDoc
 import io.jumpco.open.kfsm.parseStateMachine
 import io.jumpco.open.kfsm.plantUml
-import io.jumpco.open.kfsm.visualize
 import org.junit.Before
 import org.junit.Test
 import java.io.File
