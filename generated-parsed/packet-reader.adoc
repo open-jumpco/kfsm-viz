@@ -1,34 +1,34 @@
-= PacketReaderFSM State Chart
+== PacketReaderFSM State Chart
 
-== Default State Map
+=== Default State Map
 
 |===
 | Start | Event[Guard] | Target | Action
 
 | [*]
-| CTRL `[{byte->byte == CharacterConstants.SOH}]`
+| CTRL `[{it == CharacterConstants.SOH}]`
 | RCVPCKT
 | 
 
 | RCVPCKT
-| CTRL `[{byte->byte == CharacterConstants.STX}]`
+| CTRL `[{it == CharacterConstants.STX}]`
 | RCVDATA
-|  `{  addField()  }`
+|  `{  addField();  }`
 
 | RCVPCKT
 | BYTE
 | RCVCHK
-|  `{byte->  require(byte != null)  addChecksum(byte)  }`
+|  `{  addChecksum(it);  }`
 
 | RCVDATA
 | BYTE
 | RCVDATA
-|  `{byte->  require(byte != null)  addByte(byte)  }`
+|  `{  addByte(it);  }`
 
 | RCVDATA
-| CTRL `[{byte->byte == CharacterConstants.ETX}]`
+| CTRL `[{it == CharacterConstants.ETX}]`
 | RCVPCKT
-|  `{  endField()  }`
+|  `{  endField();  }`
 
 | RCVDATA
 | ESC
@@ -38,17 +38,17 @@
 | RCVESC
 | ESC
 | RCVDATA
-|  `{  addByte(CharacterConstants.ESC)  }`
+|  `{  addByte(CharacterConstants.ESC);  }`
 
 | RCVESC
 | CTRL
 | RCVDATA
-|  `{byte->  require(byte != null)  addByte(byte)  }`
+|  `{  addByte(it);  }`
 
 | RCVCHK
 | BYTE
 | RCVCHK
-|  `{byte->  require(byte != null)  addChecksum(byte)  }`
+|  `{  addChecksum(it);  }`
 
 | RCVCHK
 | ESC
@@ -56,28 +56,28 @@
 | 
 
 | RCVCHK
-| CTRL `[{byte->byte == CharacterConstants.EOT}]`
+| CTRL `[{it == CharacterConstants.EOT}]`
 | CHKSUM
-|  `{  checksum()  }`
+|  `{  checksum();  }`
 
 | CHKSUM
 | \<<automatic>> `[{!checksumValid}]`
 | [*]
-|  `{  sendNACK()  }`
+|  `{  sendNACK();  }`
 
 | CHKSUM
 | \<<automatic>> `[{checksumValid}]`
 | [*]
-|  `{  sendACK()  }`
+|  `{  sendACK();  }`
 
 | RCVCHKESC
 | ESC
 | RCVCHK
-|  `{  addChecksum(CharacterConstants.ESC)  }`
+|  `{  addChecksum(CharacterConstants.ESC);  }`
 
 | RCVCHKESC
 | CTRL
 | RCVCHK
-|  `{byte->  require(byte != null)  addChecksum(byte)  }`
+|  `{byte->  require(byte != null);  addChecksum(byte);  }`
 |===
 

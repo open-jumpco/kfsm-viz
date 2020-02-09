@@ -1,3 +1,4 @@
+import CharacterConstants.Companion
 import ReaderEvents.BYTE
 import ReaderEvents.CTRL
 import ReaderEvents.ESC
@@ -9,6 +10,7 @@ import ReaderStates.RCVDATA
 import ReaderStates.RCVESC
 import ReaderStates.RCVPCKT
 import ReaderStates.START
+import CharacterConstants.*
 import io.jumpco.open.kfsm.stateMachine
 import java.io.ByteArrayOutputStream
 
@@ -29,8 +31,8 @@ interface PacketHandler : ProtocolHandler {
     fun print()
     fun addField()
     fun endField()
-    fun addByte(byte: Int)
-    fun addChecksum(byte: Int)
+    fun addByte(byte: Int?)
+    fun addChecksum(byte: Int?)
     fun checksum()
 }
 
@@ -78,13 +80,15 @@ class Packet(private val protocolHandler: ProtocolHandler) : PacketHandler,
         currentField = null
     }
 
-    override fun addByte(byte: Int) {
+    override fun addByte(byte: Int?) {
+        require(byte != null) { "argument required" }
         val field = currentField
         require(field != null) { "expected currentField to have a value" }
         field.addByte(byte)
     }
 
-    override fun addChecksum(byte: Int) {
+    override fun addChecksum(byte: Int?) {
+        require(byte != null) { "argument required" }
         checkSum.addByte(byte)
     }
 
@@ -156,23 +160,21 @@ class PacketReaderFSM(private val packetHandler: PacketHandler) {
                 }
             }
             whenState(START) {
-                onEvent(CTRL to RCVPCKT, guard = { byte -> byte == CharacterConstants.SOH }) {}
+                onEvent(CTRL to RCVPCKT, guard = { it == CharacterConstants.SOH }) {}
             }
             whenState(RCVPCKT) {
-                onEvent(CTRL to RCVDATA, guard = { byte -> byte == CharacterConstants.STX }) {
+                onEvent(CTRL to RCVDATA, guard = { it == CharacterConstants.STX }) {
                     addField()
                 }
-                onEvent(BYTE to RCVCHK) { byte ->
-                    require(byte != null)
-                    addChecksum(byte)
+                onEvent(BYTE to RCVCHK) {
+                    addChecksum(it)
                 }
             }
             whenState(RCVDATA) {
-                onEvent(BYTE) { byte ->
-                    require(byte != null)
-                    addByte(byte)
+                onEvent(BYTE) {
+                    addByte(it)
                 }
-                onEvent(CTRL to RCVPCKT, guard = { byte -> byte == CharacterConstants.ETX }) {
+                onEvent(CTRL to RCVPCKT, guard = { it == CharacterConstants.ETX }) {
                     endField()
                 }
                 onEvent(ESC to RCVESC) {}
@@ -181,18 +183,16 @@ class PacketReaderFSM(private val packetHandler: PacketHandler) {
                 onEvent(ESC to RCVDATA) {
                     addByte(CharacterConstants.ESC)
                 }
-                onEvent(CTRL to RCVDATA) { byte ->
-                    require(byte != null)
-                    addByte(byte)
+                onEvent(CTRL to RCVDATA) {
+                    addByte(it)
                 }
             }
             whenState(RCVCHK) {
-                onEvent(BYTE) { byte ->
-                    require(byte != null)
-                    addChecksum(byte)
+                onEvent(BYTE) {
+                    addChecksum(it)
                 }
                 onEvent(ESC to RCVCHKESC) {}
-                onEvent(CTRL to CHKSUM, guard = { byte -> byte == CharacterConstants.EOT }) {
+                onEvent(CTRL to CHKSUM, guard = { it == CharacterConstants.EOT }) {
                     checksum()
                 }
             }
@@ -226,8 +226,8 @@ class PacketReaderFSM(private val packetHandler: PacketHandler) {
             CharacterConstants.ETX,
             CharacterConstants.STX,
             CharacterConstants.ACK,
-            CharacterConstants.NAK -> fsm.sendEvent(ReaderEvents.CTRL, byte)
-            else                   -> fsm.sendEvent(ReaderEvents.BYTE, byte)
+            CharacterConstants.NAK -> fsm.sendEvent(CTRL, byte)
+            else                   -> fsm.sendEvent(BYTE, byte)
         }
     }
 }

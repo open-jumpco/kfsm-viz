@@ -1,19 +1,19 @@
 @startuml
 state default {
-[*] --> RCVPCKT : CTRL[{byte->byte == CharacterConstants.SOH}]
-RCVPCKT --> RCVDATA : CTRL[{byte->byte == CharacterConstants.STX}] :: {  addField()  }
-RCVPCKT --> RCVCHK : BYTE :: {byte->  require(byte != null)  addChecksum(byte)  }
-RCVDATA --> RCVDATA : BYTE :: {byte->  require(byte != null)  addByte(byte)  }
-RCVDATA --> RCVPCKT : CTRL[{byte->byte == CharacterConstants.ETX}] :: {  endField()  }
+[*] --> RCVPCKT : CTRL[{it == CharacterConstants.SOH}]
+RCVPCKT --> RCVDATA : CTRL[{it == CharacterConstants.STX}] :: {  addField();  }
+RCVPCKT --> RCVCHK : BYTE :: {  addChecksum(it);  }
+RCVDATA --> RCVDATA : BYTE :: {  addByte(it);  }
+RCVDATA --> RCVPCKT : CTRL[{it == CharacterConstants.ETX}] :: {  endField();  }
 RCVDATA --> RCVESC : ESC
-RCVESC --> RCVDATA : ESC :: {  addByte(CharacterConstants.ESC)  }
-RCVESC --> RCVDATA : CTRL :: {byte->  require(byte != null)  addByte(byte)  }
-RCVCHK --> RCVCHK : BYTE :: {byte->  require(byte != null)  addChecksum(byte)  }
+RCVESC --> RCVDATA : ESC :: {  addByte(CharacterConstants.ESC);  }
+RCVESC --> RCVDATA : CTRL :: {  addByte(it);  }
+RCVCHK --> RCVCHK : BYTE :: {  addChecksum(it);  }
 RCVCHK --> RCVCHKESC : ESC
-RCVCHK --> CHKSUM : CTRL[{byte->byte == CharacterConstants.EOT}] :: {  checksum()  }
-CHKSUM --> [*] : <<automatic>>[{!checksumValid}] :: {  sendNACK()  }
-CHKSUM --> [*] : <<automatic>>[{checksumValid}] :: {  sendACK()  }
-RCVCHKESC --> RCVCHK : ESC :: {  addChecksum(CharacterConstants.ESC)  }
-RCVCHKESC --> RCVCHK : CTRL :: {byte->  require(byte != null)  addChecksum(byte)  }
+RCVCHK --> CHKSUM : CTRL[{it == CharacterConstants.EOT}] :: {  checksum();  }
+CHKSUM --> [*] : <<automatic>>[{!checksumValid}] :: {  sendNACK();  }
+CHKSUM --> [*] : <<automatic>>[{checksumValid}] :: {  sendACK();  }
+RCVCHKESC --> RCVCHK : ESC :: {  addChecksum(CharacterConstants.ESC);  }
+RCVCHKESC --> RCVCHK : CTRL :: {byte->  require(byte != null);  addChecksum(byte);  }
 }
 @enduml

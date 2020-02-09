@@ -1,7 +1,7 @@
 @startuml
 state default {
-LOCKED --> UNLOCKED : COIN :: {info->  require(info != null){"Info required"}  info.copy(locked=false,message="")  }
-UNLOCKED --> LOCKED : PASS :: {info->  require(info != null){"Info required"}  info.copy(locked=true,message="")  }
-UNLOCKED --> UNLOCKED : COIN :: {info->  require(info != null){"Info required"}  info.copy(message="Return Coin")  }
+LOCKED --> UNLOCKED : COIN :: {info->  require(info != null){"Info required"};  info.copy(locked=false,message="");  }
+UNLOCKED --> LOCKED : PASS :: {info->  require(info != null){"Info required"};  info.copy(locked=true,message="");  }
+UNLOCKED --> UNLOCKED : COIN :: {info->  require(info != null){"Info required"};  info.copy(message="Return Coin");  }
 }
 @enduml

@@ -2,7 +2,15 @@
 
 This project will explore many ways to visualize KFSM definitions.
 
-== Generated Samples
+This project require Kotlin Grammar Tools in order to parse the code containing the FSM.
+
+I made changes to `https://github.com/Kotlin/grammar-tools` if the change had been merge the batch file change change to checkout
+their version.
+
+Execute one of `download-build-grammar-tools.sh` or `download-build-grammar-tools.cmd`
+
+
+== Generated from StateMachineDefinition.
 
 === Plantuml
 
@@ -29,3 +37,39 @@ image::secure_turnstile.png[]
 link:./src/test/kotlin/PacketReader.kt[PacketReader.kt]
 
 image::packet_reader.png[]
+
+== Generated from parsed VisualStateDefinition
+
+We generated an asciidoc table as well as a plantuml statemachine model.
+
+==== Turnstile FSM
+
+link:./src/test/kotlin/Turnstile.kt[Turnstile.kt]
+
+include::generated-parsed/turnstile.adoc[]
+
+image::turnstile-parsed.png[]
+
+==== Paying Turnstile FSM
+
+link:./src/test/kotlin/PayingTurnstile.kt[PayingTurnstile.kt]
+
+include::generated-parsed/paying-turnstile.adoc[]
+
+image::paying_turnstile-parsed.png[]
+
+==== Secure Turnstile FSM
+
+link:./src/test/kotlin/SecureTurnstile.kt[SecureTurnstile.kt]
+
+include::generated-parsed/secure-turnstile.adoc[]
+
+image::secure_turnstile-parsed.png[]
+
+==== Packer Reader FSM
+
+link:./src/test/kotlin/PacketReader.kt[PacketReader.kt]
+
+include::generated-parsed/packet-reader.adoc[]
+
+image::packet_reader-parsed.png[]

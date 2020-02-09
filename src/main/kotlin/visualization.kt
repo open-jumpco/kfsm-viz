@@ -137,11 +137,11 @@ fun plantUml(statemachine: VisualStateMachineDefinion): String {
 fun asciiDoc(statemachine: VisualStateMachineDefinion): String {
     val sw = StringWriter()
     val output = PrintWriter(sw)
-    output.println("= ${statemachine.name} State Chart")
+    output.println("== ${statemachine.name} State Chart")
     output.println()
 
     statemachine.stateMaps.filter { it.value.name != "default" }.forEach { stateMap ->
-        output.println("== State Map ${stateMap.value.name}")
+        output.println("=== State Map ${stateMap.value.name}")
         output.println()
         output.println(
             """
@@ -156,7 +156,7 @@ fun asciiDoc(statemachine: VisualStateMachineDefinion): String {
         output.println()
     }
     statemachine.stateMaps.filter { it.value.name == "default" }.forEach { stateMap ->
-        output.println("== Default State Map")
+        output.println("=== Default State Map")
         output.println()
         output.println(
             """
@@ -215,9 +215,9 @@ fun printAsciiDocTransition(transition: VisualTransition, output: PrintWriter) {
 val spacesAround = setOf("equalityOperator", "comparisonOperator")
 fun printTree(parseTree: KotlinParseTree): String {
     val builder = StringBuilder(0)
-
-    if (parseTree.text != null) {
-        builder.append(parseTree.text)
+    when {
+        parseTree.name == "semis" -> builder.append(";")
+        parseTree.text != null    -> builder.append(parseTree.text)
     }
     if (spacesAround.contains(parseTree.name)) {
         builder.append(' ')
@@ -248,21 +248,28 @@ fun parseStateMachine(parentClass: String, sourceFile: File): VisualStateMachine
     return result
 }
 
+fun isParent(parent: KotlinParseTree, child: KotlinParseTree): Boolean {
+    return if (parent.equals(child)) {
+        true
+    } else {
+        parent.children.any { isParent(it, child) }
+    }
+}
+
 fun parserStateMap(name: String, stateMapTree: KotlinParseTree): VisualStateMapDefinition {
     val result = VisualStateMapDefinition(name)
-    // TODO find all expression nodes either stateMap or whenState stop when successful
-    val search = stateMapTree.children.filterNot { findExpressionWithIdentifier("stateMap", it).toList().isNotEmpty() }
-    search.forEach {
-        println("search:$name:${printAllTree(it)}")
+    val stateMaps = stateMapTree.children.flatMap {
+        findExpressionWithIdentifier("stateMap", it)
     }
-    val whenStates = (if (name == "default") stateMapTree.children else search).flatMap {
+    val whenStates = stateMapTree.children.flatMap {
         findExpressionWithIdentifier("whenState", it)
-    }
+    }.filterNot { ws -> stateMaps.any { isParent(it, ws) } }
     whenStates.forEach { state ->
         var stateName = printTree(findNodeByType("valueArgument", state).toList().first())
         if (stateName.contains('.')) {
             stateName = stateName.substringAfter(".")
         }
+        println("whenState:$stateName:${printTree(state)}")
         result.states += stateName
         val onEvents = state.children.flatMap { findExpressionWithIdentifier(stateMachineEventMethodNames, it) }
         val transitions = onEvents.map { parseStateTransition(stateName, it) }
@@ -281,6 +288,7 @@ fun parseStateTransition(stateName: String, parseTree: KotlinParseTree): VisualT
     val valueArg = findNodeByType("valueArguments", functionDecl).toList().first()
     val actionLambda = functionDecl.children.find { it.name == "annotatedLambda" }
     if (actionLambda != null) {
+        println("action:$stateName:$onEventText:${printAllTree(actionLambda)}")
         result.action = printTree(actionLambda)
     }
 //    println("$onEventText:${printAllTree(valueArg)}")
@@ -398,9 +406,10 @@ fun findNodeByType(type: String, parseTree: KotlinParseTree): Iterable<KotlinPar
     val result = mutableListOf<KotlinParseTree>()
     if (parseTree.name == type) {
         result.add(parseTree)
+    } else {
+        val children = parseTree.children.flatMap { findNodeByType(type, it) }
+        result += children
     }
-    val children = parseTree.children.flatMap { findNodeByType(type, it) }
-    result += children
     return result
 }
 
@@ -444,6 +453,16 @@ fun findNodeWithTypeAndWithIdentifier(
 ): Iterable<KotlinParseTree> {
     val identifierNodes =
         findNodeByType(type, parseTree).filter { findChildWithName("Identifier", identifier, it).toList().isNotEmpty() }
+    return identifierNodes
+}
+
+fun findNodeWithTypeAndFirstIdentifier(
+    type: String,
+    identifier: String,
+    parseTree: KotlinParseTree
+): Iterable<KotlinParseTree> {
+    val identifierNodes =
+        findNodeByType(type, parseTree).filter { findNodeByType("Identifier", it).firstOrNull()?.text == identifier }
     return identifierNodes
 }
 

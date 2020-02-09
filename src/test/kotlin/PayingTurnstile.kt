@@ -8,8 +8,6 @@
  */
 package io.jumpco.open.kfsm
 
-import io.jumpco.open.kfsm.PayingTurnstileStates.LOCKED
-
 /**
  * @suppress
  */
@@ -41,13 +39,15 @@ class PayingTurnstile(
         println("Alarm")
     }
 
-    fun coin(value: Int): Int {
+    fun coin(value: Int?): Int {
+        require(value != null) { "argument required" }
         coins += value
         println("Coin received=$value, Total=$coins")
         return coins
     }
 
-    fun returnCoin(returnCoins: Int) {
+    fun returnCoin(returnCoins: Int?) {
+        require(returnCoins != null) { "argument required" }
         println("Return Coin:$returnCoins")
         coins -= returnCoins
     }
@@ -152,8 +152,8 @@ class PayingTurnstileFSM(
                         unlock()
                         reset()
                     }
-                    onEvent(PayingTurnstileEvents.COIN) { value -> require(value != null) { "argument required for COIN" }
-                        coin(value)
+                    onEvent(PayingTurnstileEvents.COIN) {
+                        coin(it)
                         if (coins < requiredCoins) {
                             println("Please add ${requiredCoins - coins}")
                         }
@@ -162,23 +162,21 @@ class PayingTurnstileFSM(
             }
             whenState(PayingTurnstileStates.LOCKED) {
                 // The coin brings amount to exact amount
-                onEventPush(PayingTurnstileEvents.COIN, "coins", PayingTurnstileStates.COINS) { value -> require(value != null) { "argument required for COIN" }
-                    coin(value)
+                onEventPush(PayingTurnstileEvents.COIN, "coins", PayingTurnstileStates.COINS) {
+                    coin(it)
                     unlock()
                     reset()
                 }
                 // The coins add up to more than required
                 onEventPush(PayingTurnstileEvents.COIN, "coins", PayingTurnstileStates.COINS,
-                    guard = { value -> require(value != null) { "argument required for COIN" }
-                        value + coins < requiredCoins
-                    }) { value -> require(value != null) { "argument required for COIN" }
-                    coin(value)
+                    guard = { requiredCoins >= coins + (it ?: error("argument required")) }) {
+                    coin(it)
                     println("Coins=$coins, Please add ${requiredCoins - coins}")
                 }
             }
             whenState(PayingTurnstileStates.UNLOCKED) {
-                onEvent(PayingTurnstileEvents.COIN) { value -> require(value != null) { "argument required for COIN" }
-                    returnCoin(coin(value))
+                onEvent(PayingTurnstileEvents.COIN) {
+                    returnCoin(coin(it))
                 }
                 onEvent(PayingTurnstileEvents.PASS to PayingTurnstileStates.LOCKED) {
                     lock()
