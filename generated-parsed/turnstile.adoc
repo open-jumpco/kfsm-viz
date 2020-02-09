@@ -8,16 +8,16 @@
 | LOCKED
 | COIN
 | UNLOCKED
-|  `{info->  require(info != null){"Info required"};  info.copy(locked=false,message="");  }`
+|  `{info->require(info != null){"Info required"};info.copy(locked=false,message="");}`
 
 | UNLOCKED
 | PASS
 | LOCKED
-|  `{info->  require(info != null){"Info required"};  info.copy(locked=true,message="");  }`
+|  `{info->require(info != null){"Info required"};info.copy(locked=true,message="");}`
 
 | UNLOCKED
 | COIN
 | UNLOCKED
-|  `{info->  require(info != null){"Info required"};  info.copy(message="Return Coin");  }`
+|  `{info->require(info != null){"Info required"};info.copy(message="Return Coin");}`
 |===
 

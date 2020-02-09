@@ -1,19 +1,21 @@
 @startuml
+skinparam StateFontName Helvetica
+skinparam defaultFontName Monospaced
 state default {
-[*] --> RCVPCKT : CTRL[{it == CharacterConstants.SOH}]
-RCVPCKT --> RCVDATA : CTRL[{it == CharacterConstants.STX}] :: {  addField();  }
-RCVPCKT --> RCVCHK : BYTE :: {  addChecksum(it);  }
-RCVDATA --> RCVDATA : BYTE :: {  addByte(it);  }
-RCVDATA --> RCVPCKT : CTRL[{it == CharacterConstants.ETX}] :: {  endField();  }
+[*] --> RCVPCKT : CTRL\l[{it == CharacterConstants.SOH}]
+RCVPCKT --> RCVDATA : CTRL\l[{it == CharacterConstants.STX}]\l<<action>> {\laddField();\l}
+RCVPCKT --> RCVCHK : BYTE\l<<action>> {\laddChecksum(it);\l}
+RCVDATA --> RCVDATA : BYTE\l<<action>> {\laddByte(it);\l}
+RCVDATA --> RCVPCKT : CTRL\l[{it == CharacterConstants.ETX}]\l<<action>> {\lendField();\l}
 RCVDATA --> RCVESC : ESC
-RCVESC --> RCVDATA : ESC :: {  addByte(CharacterConstants.ESC);  }
-RCVESC --> RCVDATA : CTRL :: {  addByte(it);  }
-RCVCHK --> RCVCHK : BYTE :: {  addChecksum(it);  }
+RCVESC --> RCVDATA : ESC\l<<action>> {\laddByte(CharacterConstants.ESC);\l}
+RCVESC --> RCVDATA : CTRL\l<<action>> {\laddByte(it);\l}
+RCVCHK --> RCVCHK : BYTE\l<<action>> {\laddChecksum(it);\l}
 RCVCHK --> RCVCHKESC : ESC
-RCVCHK --> CHKSUM : CTRL[{it == CharacterConstants.EOT}] :: {  checksum();  }
-CHKSUM --> [*] : <<automatic>>[{!checksumValid}] :: {  sendNACK();  }
-CHKSUM --> [*] : <<automatic>>[{checksumValid}] :: {  sendACK();  }
-RCVCHKESC --> RCVCHK : ESC :: {  addChecksum(CharacterConstants.ESC);  }
-RCVCHKESC --> RCVCHK : CTRL :: {byte->  require(byte != null);  addChecksum(byte);  }
+RCVCHK --> CHKSUM : CTRL\l[{it == CharacterConstants.EOT}]\l<<action>> {\lchecksum();\l}
+CHKSUM --> [*] : <<automatic>>\l[{!checksumValid}]\l<<action>> {\lsendNACK();\l}
+CHKSUM --> [*] : <<automatic>>\l[{checksumValid}]\l<<action>> {\lsendACK();\l}
+RCVCHKESC --> RCVCHK : ESC\l<<action>> {\laddChecksum(CharacterConstants.ESC);\l}
+RCVCHKESC --> RCVCHK : CTRL\l<<action>> {byte->\lrequire(byte != null);\laddChecksum(byte);\l}
 }
 @enduml

@@ -1,10 +1,12 @@
 @startuml
+skinparam StateFontName Helvetica
+skinparam defaultFontName Monospaced
 state default {
-LOCKED --> LOCKED : CARD[{cardId->requireNotNull(cardId);isOverrideCard(cardId)&&overrideActive;}] :: { cancelOverride(); }
-LOCKED --> LOCKED : CARD[{cardId->requireNotNull(cardId);isOverrideCard(cardId);}] :: { activateOverride(); }
-LOCKED --> UNLOCKED : CARD[{cardId->requireNotNull(cardId);overrideActive||isValidCard(cardId);}] :: { unlock(); }
-LOCKED --> LOCKED : CARD[{cardId->requireNotNull(cardId){"cardId is required"};!isValidCard(cardId);}] :: {cardId-> requireNotNull(cardId); invalidCard(cardId); }
-UNLOCKED --> LOCKED : CARD[{cardId->requireNotNull(cardId);isOverrideCard(cardId);}] :: { lock(); }
-UNLOCKED --> LOCKED : PASS :: { lock(); }
+LOCKED --> LOCKED : CARD\l[{cardId->\lrequireNotNull(cardId);\lisOverrideCard(cardId)&&overrideActive;\l}]\l<<action>> {\lcancelOverride();\l}
+LOCKED --> LOCKED : CARD\l[{cardId->\lrequireNotNull(cardId);\lisOverrideCard(cardId);\l}]\l<<action>> {\lactivateOverride();\l}
+LOCKED --> UNLOCKED : CARD\l[{cardId->\lrequireNotNull(cardId);\loverrideActive||isValidCard(cardId);\l}]\l<<action>> {\lunlock();\l}
+LOCKED --> LOCKED : CARD\l[{cardId->\lrequireNotNull(cardId){"cardId is required"};\l!isValidCard(cardId);\l}]\l<<action>> {cardId->\lrequireNotNull(cardId);\linvalidCard(cardId);\l}
+UNLOCKED --> LOCKED : CARD\l[{cardId->\lrequireNotNull(cardId);\lisOverrideCard(cardId);\l}]\l<<action>> {\llock();\l}
+UNLOCKED --> LOCKED : PASS\l<<action>> {\llock();\l}
 }
 @enduml

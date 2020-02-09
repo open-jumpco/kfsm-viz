@@ -1,13 +1,15 @@
 @startuml
+skinparam StateFontName Helvetica
+skinparam defaultFontName Monospaced
 state coins {
-COINS --> UNLOCKED : <<automatic>>[{coins > requiredCoins}] :: { returnCoin(coins-requiredCoins); unlock(); reset(); }
-COINS --> UNLOCKED : <<automatic>>[{coins == requiredCoins}] :: { unlock(); reset(); }
-COINS --> COINS : COIN :: { coin(it); if(coins < requiredCoins){ println("Please add ${requiredCoins-coins}"); }; }
+COINS --> UNLOCKED : <<automatic>>\l[{coins > requiredCoins}]\l<<action>> {\lreturnCoin(coins-requiredCoins);\lunlock();\lreset();\l}
+COINS --> UNLOCKED : <<automatic>>\l[{coins == requiredCoins}]\l<<action>> {\lunlock();\lreset();\l}
+COINS --> COINS : COIN\l<<action>> {\lcoin(it);\lif(coins < requiredCoins){\lprintln("Please add ${requiredCoins-coins}");\l};\l}
 }
 state default {
-LOCKED --> COINS : COIN :: { coin(it); unlock(); reset(); }
-LOCKED --> COINS : COIN[{requiredCoins >= coins+(it?:error("argument required"))}] :: { coin(it); println("Coins=$coins, Please add ${requiredCoins-coins}"); }
-UNLOCKED --> UNLOCKED : COIN :: { returnCoin(coin(it)); }
-UNLOCKED --> LOCKED : PASS :: { lock(); }
+LOCKED --> COINS : COIN\l<<action>> {\lcoin(it);\lunlock();\lreset();\l}
+LOCKED --> COINS : COIN\l[{requiredCoins >= coins+(it?:error("argument required"))}]\l<<action>> {\lcoin(it);\lprintln("Coins=$coins, Please add ${requiredCoins-coins}");\l}
+UNLOCKED --> UNLOCKED : COIN\l<<action>> {\lreturnCoin(coin(it));\l}
+UNLOCKED --> LOCKED : PASS\l<<action>> {\llock();\l}
 }
 @enduml

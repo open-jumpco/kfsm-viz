@@ -16,13 +16,13 @@ private fun printPlantUmlTransition(transition: VisualTransition, output: PrintW
         output.print(" : $event")
     }
     if (transition.guard != null) {
-        val guard = transition.guard!!.replace("\n", "").replace("\r", "")
-        output.print("[$guard]")
+        val guard = transition.guard!!.replace("\n", "\\l").replace("\r", "")
+        output.print("\\l[$guard]")
     }
 
     if (transition.action != null && transition?.action?.trim() != "{}") {
-        val action = transition?.action?.replace("\n", " ")?.replace("\r", " ")
-        output.print(" :: $action")
+        val action = transition?.action?.replace("\n", "\\l")?.replace("\r", "")
+        output.print("\\l<<action>> $action")
     }
     output.println()
 }
@@ -31,6 +31,8 @@ fun plantUml(statemachine: VisualStateMachineDefinion): String {
     val sw = StringWriter()
     val output = PrintWriter(sw)
     output.println("@startuml")
+    output.println("skinparam StateFontName Helvetica")
+    output.println("skinparam defaultFontName Monospaced")
     statemachine.stateMaps.filter { it.value.name != "default" }.forEach { stateMap ->
         output.println("state ${stateMap.value.name} {")
         stateMap.value.transitions.forEach {
@@ -123,7 +125,7 @@ fun printAsciiDocTransition(transition: VisualTransition, output: PrintWriter) {
     output.println("| $endName")
     output.print("| ")
     if (transition.action != null && transition?.action?.trim() != "{}") {
-        val action = transition?.action?.replace("\n", " ")?.replace("\r", " ")
+        val action = transition?.action?.replace("\n", "")?.replace("\r", "")
         output.print(escapeCharacters(" `$action`", "|"))
     }
     output.println()
