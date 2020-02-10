@@ -16,7 +16,7 @@ private fun printPlantUmlTransition(transition: VisualTransition, output: PrintW
         output.print(" : $event")
     }
     if (transition.guard != null) {
-        val guard = transition.guard!!.replace("\n", "\\l").replace("\r", "")
+        val guard = transition.guard!!.replace("\n", "").replace("\r", "")
         output.print(" [$guard]")
     }
 

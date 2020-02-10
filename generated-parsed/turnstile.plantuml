@@ -2,8 +2,8 @@
 skinparam StateFontName Helvetica
 skinparam defaultFontName Monospaced
 state default {
-LOCKED --> UNLOCKED : COIN\l<<action>> {info->\lrequire(info != null){"Info required"};\linfo.copy(locked=false,message="");\l}
-UNLOCKED --> LOCKED : PASS\l<<action>> {info->\lrequire(info != null){"Info required"};\linfo.copy(locked=true,message="");\l}
-UNLOCKED --> UNLOCKED : COIN\l<<action>> {info->\lrequire(info != null){"Info required"};\linfo.copy(message="Return Coin");\l}
+LOCKED --> UNLOCKED : COIN\l<<action>> {info->\lrequire(info != null){"Info required"}\linfo.copy(locked=false,message="")\l}
+UNLOCKED --> LOCKED : PASS\l<<action>> {info->\lrequire(info != null){"Info required"}\linfo.copy(locked=true,message="")\l}
+UNLOCKED --> UNLOCKED : COIN\l<<action>> {info->\lrequire(info != null){"Info required"}\linfo.copy(message="Return Coin")\l}
 }
 @enduml

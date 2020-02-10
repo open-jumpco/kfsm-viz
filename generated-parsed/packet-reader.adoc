@@ -13,22 +13,22 @@
 | RCVPCKT
 | CTRL `[{it == CharacterConstants.STX}]`
 | RCVDATA
-|  `{addField();}`
+|  `{addField()}`
 
 | RCVPCKT
 | BYTE
 | RCVCHK
-|  `{addChecksum(it);}`
+|  `{addChecksum(it)}`
 
 | RCVDATA
 | BYTE
 | RCVDATA
-|  `{addByte(it);}`
+|  `{addByte(it)}`
 
 | RCVDATA
 | CTRL `[{it == CharacterConstants.ETX}]`
 | RCVPCKT
-|  `{endField();}`
+|  `{endField()}`
 
 | RCVDATA
 | ESC
@@ -38,17 +38,17 @@
 | RCVESC
 | ESC
 | RCVDATA
-|  `{addByte(CharacterConstants.ESC);}`
+|  `{addByte(CharacterConstants.ESC)}`
 
 | RCVESC
 | CTRL
 | RCVDATA
-|  `{addByte(it);}`
+|  `{addByte(it)}`
 
 | RCVCHK
 | BYTE
 | RCVCHK
-|  `{addChecksum(it);}`
+|  `{addChecksum(it)}`
 
 | RCVCHK
 | ESC
@@ -58,26 +58,26 @@
 | RCVCHK
 | CTRL `[{it == CharacterConstants.EOT}]`
 | CHKSUM
-|  `{checksum();}`
+|  `{checksum()}`
 
 | CHKSUM
 | \<<automatic>> `[{!checksumValid}]`
 | [*]
-|  `{sendNACK();}`
+|  `{sendNACK()}`
 
 | CHKSUM
 | \<<automatic>> `[{checksumValid}]`
 | [*]
-|  `{sendACK();}`
+|  `{sendACK()}`
 
 | RCVCHKESC
 | ESC
 | RCVCHK
-|  `{addChecksum(CharacterConstants.ESC);}`
+|  `{addChecksum(CharacterConstants.ESC)}`
 
 | RCVCHKESC
 | CTRL
 | RCVCHK
-|  `{byte->require(byte != null);addChecksum(byte);}`
+|  `{byte->require(byte != null)addChecksum(byte)}`
 |===
 

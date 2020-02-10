@@ -8,17 +8,17 @@
 | COINS
 | \<<automatic>> `[{coins > requiredCoins}]`
 | UNLOCKED
-|  `{returnCoin(coins-requiredCoins);unlock();reset();}`
+|  `{returnCoin(coins-requiredCoins)unlock()reset()}`
 
 | COINS
 | \<<automatic>> `[{coins == requiredCoins}]`
 | UNLOCKED
-|  `{unlock();reset();}`
+|  `{unlock()reset()}`
 
 | COINS
 | COIN
 | COINS
-|  `{coin(it);if(coins < requiredCoins){println("Please add ${requiredCoins-coins}");};}`
+|  `{coin(it)if(coins < requiredCoins){println("Please add ${requiredCoins-coins}")}}`
 |===
 
 === Default State Map
@@ -29,21 +29,21 @@
 | LOCKED
 | COIN
 | COINS
-|  `{coin(it);unlock();reset();}`
+|  `{coin(it)unlock()reset()}`
 
 | LOCKED
 | COIN `[{requiredCoins >= coins+(it?:error("argument required"))}]`
 | COINS
-|  `{coin(it);println("Coins=$coins, Please add ${requiredCoins-coins}");}`
+|  `{coin(it)println("Coins=$coins, Please add ${requiredCoins-coins}")}`
 
 | UNLOCKED
 | COIN
 | UNLOCKED
-|  `{returnCoin(coin(it));}`
+|  `{returnCoin(coin(it))}`
 
 | UNLOCKED
 | PASS
 | LOCKED
-|  `{lock();}`
+|  `{lock()}`
 |===
 

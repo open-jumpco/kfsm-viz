@@ -8,31 +8,31 @@
 | LOCKED
 | CARD `[{cardId->requireNotNull(cardId);isOverrideCard(cardId)&&overrideActive;}]`
 | LOCKED
-|  `{cancelOverride();}`
+|  `{cancelOverride()}`
 
 | LOCKED
 | CARD `[{cardId->requireNotNull(cardId);isOverrideCard(cardId);}]`
 | LOCKED
-|  `{activateOverride();}`
+|  `{activateOverride()}`
 
 | LOCKED
 | CARD `[{cardId->requireNotNull(cardId);overrideActive\|\|isValidCard(cardId);}]`
 | UNLOCKED
-|  `{unlock();}`
+|  `{unlock()}`
 
 | LOCKED
 | CARD `[{cardId->requireNotNull(cardId){"cardId is required"};!isValidCard(cardId);}]`
 | LOCKED
-|  `{cardId->requireNotNull(cardId);invalidCard(cardId);}`
+|  `{cardId->requireNotNull(cardId)invalidCard(cardId)}`
 
 | UNLOCKED
 | CARD `[{cardId->requireNotNull(cardId);isOverrideCard(cardId);}]`
 | LOCKED
-|  `{lock();}`
+|  `{lock()}`
 
 | UNLOCKED
 | PASS
 | LOCKED
-|  `{lock();}`
+|  `{lock()}`
 |===
 

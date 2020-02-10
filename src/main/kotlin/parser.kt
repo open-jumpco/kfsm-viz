@@ -75,17 +75,17 @@ fun printAllTree(parseTree: KotlinParseTree): String {
 }
 
 val spacesAround = setOf("equalityOperator", "comparisonOperator")
-fun printTree(parseTree: KotlinParseTree): String {
+fun printTree(parseTree: KotlinParseTree, includeSemis: Boolean = true): String {
     val builder = StringBuilder(0)
     when {
-        parseTree.name == "semis" -> builder.append(";")
+        parseTree.name == "semis" -> if (includeSemis) builder.append(';') else builder.append("")
         parseTree.text != null    -> builder.append(parseTree.text)
     }
     if (spacesAround.contains(parseTree.name)) {
         builder.append(' ')
     }
     parseTree.children.forEach {
-        builder.append(printTree(it))
+        builder.append(printTree(it, includeSemis))
     }
     if (spacesAround.contains(parseTree.name)) {
         builder.append(' ')
@@ -153,7 +153,7 @@ fun parseStateTransition(stateName: String, parseTree: KotlinParseTree): VisualT
     val actionLambda = functionDecl.children.find { it.name == "annotatedLambda" }
     if (actionLambda != null) {
         // println("action:$stateName:$onEventText:${printAllTree(actionLambda)}")
-        result.action = printTree(actionLambda)
+        result.action = printTree(actionLambda, false)
     }
 //    println("$onEventText:${printAllTree(valueArg)}")
     val valueArgs = valueArg.children.filter { it.name == "valueArgument" }
@@ -168,7 +168,7 @@ fun parseStateTransition(stateName: String, parseTree: KotlinParseTree): VisualT
             stringArgs += "to"
             stringArgs += rangeExp.last().trim()
         } else {
-            val str = printTree(child).trim()
+            val str = printTree(child, true).trim()
             if (!str.startsWith("guard")) {
                 stringArgs += str
             } else {

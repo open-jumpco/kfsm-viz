@@ -25,6 +25,7 @@ dependencies {
 You should implement a test method to generate the required statemachine model artifacts.
 
 === PlantUML Statemachine Diagram from StatemachineDefinition
+
 By using the StateMachineDefinition created by the DSL we do not have access to the details of guard expressions or actions.
 
 [source,kotlin]
@@ -38,9 +39,11 @@ fun produceVisualizationTurnstileFSM() {
 ----
 
 === PlantUML Statemachine Diagram from VisualStatemachineDefinition
+
 By parsing the source code we can extract the details of the guard expressions and actions.
 This requires that you place one definition inside of one class.
-There is a chance for the parser based solution to misbehave. We request that you log an issue with the problematic FSM definition.
+There is a chance for the parser based solution to misbehave.
+We request that you log an issue with the problematic FSM definition.
 
 [source,kotlin]
 ----
@@ -63,7 +66,6 @@ fun produceVisualizationTurnstileFSM() {
     File("generated-parsed", "turnstile.adoc").writeText(asciiDoc(visualisation))
 }
 ----
-
 
 == Generated from StateMachineDefinition.
 
@@ -128,3 +130,9 @@ link:./src/test/kotlin/PacketReader.kt[PacketReader.kt]
 include::generated-parsed/packet-reader.adoc[]
 
 image::packet_reader-parsed.png[]
+
+== FAQ
+
+=== What is with the semi-colons?
+
+For guard expression we have decided the keep them on one line and we made the decision to print the implicit semi-colons to remove ambiguity.
