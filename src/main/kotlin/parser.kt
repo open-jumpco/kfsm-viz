@@ -258,11 +258,11 @@ fun parseStateTransition(stateName: String, parseTree: KotlinParseTree): VisualT
             result.type = PUSH
         }
     }
-    if (result?.event?.contains('.') ?: false) {
-        result.event = result?.event?.substringAfter(".")
+    if (result.event?.contains('.') ?: false) {
+        result.event = result.event?.substringAfter(".")
     }
-    if (result?.target?.contains('.') ?: false) {
-        result.target = result?.target?.substringAfter(".")
+    if (result.target?.contains('.') ?: false) {
+        result.target = result.target?.substringAfter(".")
     }
     return result
 }

@@ -10,7 +10,7 @@ private fun printPlantUmlTransition(transition: VisualTransition, output: PrintW
         if ("<<start>>" == transition.start || "START" == transition.start) "[*]" else transition.start ?: "<<unknown>>"
     val endName = if ("<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
         ?: transition.start ?: "<<unkown>>"
-    val event = if (transition.automatic) "<<automatic>>" else transition.event ?: "<<unknown>>"
+    val event = if (transition.automatic) "<<automatic>>" else transition.event
     output.print("$startName --> $endName")
     if (event != null) {
         output.print(" : $event")
