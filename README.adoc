@@ -7,7 +7,62 @@ This project require Kotlin Grammar Tools in order to parse the code containing 
 I made changes to `https://github.com/Kotlin/grammar-tools` if the change had been merge the batch file change change to checkout
 their version.
 
-Execute one of `download-build-grammar-tools.sh` or `download-build-grammar-tools.cmd`
+== Getting Started
+
+[source,groovy]
+-----
+repositories {
+    maven {
+        url 'https://oss.sonatype.org/content/groups/public/'
+    }
+    mavenCentral()
+}
+dependencies {
+    testImplementation 'io.jumpco.open:kfsm-viz:0.9.0-SNAPSHOT'
+}
+-----
+
+You should implement a test method to generate the required statemachine model artifacts.
+
+=== PlantUML Statemachine Diagram from StatemachineDefinition
+By using the StateMachineDefinition created by the DSL we do not have access to the details of guard expressions or actions.
+
+[source,kotlin]
+----
+@Test
+fun produceVisualizationTurnstileFSM() {
+    println("== TurnStile")
+    val visualisation = visualize(TurnstileFSM.definition)
+    File("generated", "turnstile.plantuml").writeText(plantUml(visualisation))
+}
+----
+
+=== PlantUML Statemachine Diagram from VisualStatemachineDefinition
+By parsing the source code we can extract the details of the guard expressions and actions.
+This requires that you place one definition inside of one class.
+There is a chance for the parser based solution to misbehave. We request that you log an issue with the problematic FSM definition.
+
+[source,kotlin]
+----
+@Test
+fun produceVisualizationTurnstileFSM() {
+    println("== TurnStile")
+    val visualisation = parseStateMachine("TurnstileFSM", File("src/test/kotlin/Turnstile.kt"))
+    File("generated-parsed", "turnstile.plantuml").writeText(plantUml(visualisation))
+}
+----
+
+=== AsciiDoctor State Table from VisualStatemachineDefinition
+
+[source,kotlin]
+----
+@Test
+fun produceVisualizationTurnstileFSM() {
+    println("== TurnStile")
+    val visualisation = parseStateMachine("TurnstileFSM", File("src/test/kotlin/Turnstile.kt"))
+    File("generated-parsed", "turnstile.adoc").writeText(asciiDoc(visualisation))
+}
+----
 
 
 == Generated from StateMachineDefinition.

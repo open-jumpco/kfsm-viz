@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2019. Open JumpCO
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+apply plugin: 'signing'
+apply plugin: 'maven-publish'
+
+publishing {
+    repositories {
+        maven {
+            logger.lifecycle("maven:publish:version=$version")
+            def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
+            def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+            url = project.version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username rootProject.ext.find('ossJiraUser') ?: System.getenv('OSS_JIRA_USER')
+                password rootProject.ext.find('ossJiraPwd') ?: System.getenv('OSS_JIRA_PWD')
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'kfsm-viz'
+            from components.java
+            pom {
+                name = 'KFSM Visualization'
+                description = 'Visualization library for KFSM finite state-machine definitions'
+                url = 'https://open.jumpco.io/projects/kfsm.html'
+                licenses {
+                    license {
+                        name = 'GNU General Public License v3'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                        distribution = 'repo'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'corneil_jumpco'
+                        name = 'Corneil @ JumpCO'
+                        organization = 'Open JumpCO'
+                        organizationUrl = 'https://open.jumpco.io'
+                    }
+                }
+
+                scm {
+                    url = project.vcs
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
