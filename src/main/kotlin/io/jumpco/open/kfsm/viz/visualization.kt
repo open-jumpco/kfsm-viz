@@ -1,134 +1,144 @@
-package io.jumpco.open.kfsm
+package io.jumpco.open.kfsm.viz
 
+import io.jumpco.open.kfsm.DefaultTransition
+import io.jumpco.open.kfsm.GuardedTransition
+import io.jumpco.open.kfsm.SimpleTransition
+import io.jumpco.open.kfsm.StateMachineDefinition
+import io.jumpco.open.kfsm.StateMapDefinition
+import io.jumpco.open.kfsm.Transition
+import io.jumpco.open.kfsm.TransitionRules
+import io.jumpco.open.kfsm.TransitionType
 import io.jumpco.open.kfsm.TransitionType.DEFAULT
 import io.jumpco.open.kfsm.TransitionType.NORMAL
 import java.io.PrintWriter
 import java.io.StringWriter
 
-private fun printPlantUmlTransition(transition: VisualTransition, output: PrintWriter) {
-    val startName = if (transition.type == DEFAULT) transition.startMap else
-        if ("<<start>>" == transition.start || "START" == transition.start) "[*]" else transition.start ?: "<<unknown>>"
-    val endName = if ("<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
-        ?: transition.start ?: "<<unkown>>"
-    val event = if (transition.automatic) "<<automatic>>" else transition.event
-    output.print("$startName --> $endName")
-    if (event != null) {
-        output.print(" : $event")
-    }
-    if (transition.guard != null) {
-        val guard = transition.guard!!.replace("\n", "").replace("\r", "")
-        output.print(" [$guard]")
-    }
-
-    if (transition.action != null && transition?.action?.trim() != "{}") {
-        val action = transition?.action?.replace("\n", "\\l")?.replace("\r", "")
-        output.print("\\l<<action>> $action")
-    }
-    output.println()
-}
-
-fun plantUml(statemachine: VisualStateMachineDefinion): String {
-    val sw = StringWriter()
-    val output = PrintWriter(sw)
-    output.println("@startuml")
-    output.println("skinparam StateFontName Helvetica")
-    output.println("skinparam defaultFontName Monospaced")
-    statemachine.stateMaps.filter { it.value.name != "default" }.forEach { stateMap ->
-        output.println("state ${stateMap.value.name} {")
-        stateMap.value.transitions.forEach {
-            printPlantUmlTransition(it, output)
+object Visualization {
+    private fun printPlantUmlTransition(transition: VisualTransition, output: PrintWriter) {
+        val startName = if (transition.type == DEFAULT) transition.startMap else
+            if ("<<start>>" == transition.start || "START" == transition.start) "[*]" else transition.start
+                ?: "<<unknown>>"
+        val endName = if ("<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
+            ?: transition.start ?: "<<unkown>>"
+        val event = if (transition.automatic) "<<automatic>>" else transition.event
+        output.print("$startName --> $endName")
+        if (event != null) {
+            output.print(" : $event")
         }
-        output.println("}")
-    }
-    statemachine.stateMaps.filter { it.value.name == "default" }.forEach { stateMap ->
-        output.println("state ${stateMap.value.name} {")
-        stateMap.value.transitions.forEach {
-            printPlantUmlTransition(it, output)
+        if (transition.guard != null) {
+            val guard = transition.guard!!.replace("\n", "").replace("\r", "")
+            output.print(" [$guard]")
         }
-        output.println("}")
-    }
-    output.println("@enduml")
-    output.flush()
-    sw.flush()
-    return sw.toString()
-}
 
-fun asciiDoc(statemachine: VisualStateMachineDefinion): String {
-    val sw = StringWriter()
-    val output = PrintWriter(sw)
-    output.println("== ${statemachine.name} State Chart")
-    output.println()
-
-    statemachine.stateMaps.filter { it.value.name != "default" }.forEach { stateMap ->
-        output.println("=== State Map ${stateMap.value.name}")
+        if (transition.action != null && transition.action?.trim() != "{}") {
+            val action = transition.action?.replace("\n", "\\l")?.replace("\r", "")
+            output.print("\\l<<action>> $action")
+        }
         output.println()
-        output.println(
-            """
+    }
+
+    public fun plantUml(statemachine: VisualStateMachineDefinion): String {
+        val sw = StringWriter()
+        val output = PrintWriter(sw)
+        output.println("@startuml")
+        output.println("skinparam StateFontName Helvetica")
+        output.println("skinparam defaultFontName Monospaced")
+        statemachine.stateMaps.filter { it.value.name != "default" }.forEach { stateMap ->
+            output.println("state ${stateMap.value.name} {")
+            stateMap.value.transitions.forEach {
+                printPlantUmlTransition(it, output)
+            }
+            output.println("}")
+        }
+        statemachine.stateMaps.filter { it.value.name == "default" }.forEach { stateMap ->
+            output.println("state ${stateMap.value.name} {")
+            stateMap.value.transitions.forEach {
+                printPlantUmlTransition(it, output)
+            }
+            output.println("}")
+        }
+        output.println("@enduml")
+        output.flush()
+        sw.flush()
+        return sw.toString()
+    }
+
+    public fun asciiDoc(statemachine: VisualStateMachineDefinion): String {
+        val sw = StringWriter()
+        val output = PrintWriter(sw)
+        output.println("== ${statemachine.name} State Chart")
+        output.println()
+
+        statemachine.stateMaps.filter { it.value.name != "default" }.forEach { stateMap ->
+            output.println("=== State Map ${stateMap.value.name}")
+            output.println()
+            output.println(
+                """
         |===
         | Start | Event[Guard] | Target | Action
         """.trimIndent()
-        )
-        stateMap.value.transitions.forEach {
-            printAsciiDocTransition(it, output)
+            )
+            stateMap.value.transitions.forEach {
+                printAsciiDocTransition(it, output)
+            }
+            output.println("|===")
+            output.println()
         }
-        output.println("|===")
-        output.println()
-    }
-    statemachine.stateMaps.filter { it.value.name == "default" }.forEach { stateMap ->
-        output.println("=== Default State Map")
-        output.println()
-        output.println(
-            """
+        statemachine.stateMaps.filter { it.value.name == "default" }.forEach { stateMap ->
+            output.println("=== Default State Map")
+            output.println()
+            output.println(
+                """
         |===
         | Start | Event[Guard] | Target | Action
         """.trimIndent()
-        )
-        stateMap.value.transitions.forEach {
-            printAsciiDocTransition(it, output)
+            )
+            stateMap.value.transitions.forEach {
+                printAsciiDocTransition(it, output)
+            }
+            output.println("|===")
+            output.println()
         }
-        output.println("|===")
+        output.flush()
+        sw.flush()
+        return sw.toString()
+    }
+
+    fun escapeCharacters(input: String, escape: String): String {
+        val builder = StringBuilder()
+        input.forEach { c ->
+            if (escape.contains(c)) {
+                builder.append('\\')
+            }
+            builder.append(c)
+        }
+        return builder.toString()
+    }
+
+    fun printAsciiDocTransition(transition: VisualTransition, output: PrintWriter) {
         output.println()
-    }
-    output.flush()
-    sw.flush()
-    return sw.toString()
-}
-
-fun escapeCharacters(input: String, escape: String): String {
-    val builder = StringBuilder()
-    input.forEach { c ->
-        if (escape.contains(c)) {
-            builder.append('\\')
-        }
-        builder.append(c)
-    }
-    return builder.toString()
-}
-
-fun printAsciiDocTransition(transition: VisualTransition, output: PrintWriter) {
-    output.println()
-    val startName = if (transition.type == DEFAULT) transition.startMap else
-        if ("\\<<start>>" == transition.start || "START" == transition.start) "[*]" else transition.start
-            ?: "\\<<unknown>>"
-    val endName = if ("\\<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
-        ?: transition.start ?: "\\<<unkown>>"
-    val event = if (transition.automatic) "\\<<automatic>>" else transition.event ?: "\\<<unknown>>"
-    output.println("| $startName")
-    if (event != null) {
+        val startName = if (transition.type == DEFAULT) transition.startMap else
+            if ("\\<<start>>" == transition.start || "START" == transition.start) "[*]" else transition.start
+                ?: "\\<<unknown>>"
+        val endName = if ("\\<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
+            ?: transition.start ?: "\\<<unkown>>"
+        val event = if (transition.automatic) "\\<<automatic>>" else transition.event ?: "\\<<unknown>>"
+        output.println("| $startName")
         output.print("| $event")
+
+        if (transition.guard != null) {
+            val guard = transition.guard!!.replace("\n", "").replace("\r", "")
+            output.print(escapeCharacters(" `[$guard]`", "|"))
+        }
+        output.println()
+        output.println("| $endName")
+        output.print("| ")
+        if (transition.action != null && transition.action?.trim() != "{}") {
+            val action = transition.action?.replace("\n", "")?.replace("\r", "")
+            output.print(escapeCharacters(" `$action`", "|"))
+        }
+        output.println()
     }
-    if (transition.guard != null) {
-        val guard = transition.guard!!.replace("\n", "").replace("\r", "")
-        output.print(escapeCharacters(" `[$guard]`", "|"))
-    }
-    output.println()
-    output.println("| $endName")
-    output.print("| ")
-    if (transition.action != null && transition?.action?.trim() != "{}") {
-        val action = transition?.action?.replace("\n", "")?.replace("\r", "")
-        output.print(escapeCharacters(" `$action`", "|"))
-    }
-    output.println()
 }
 
 data class TransitionView(
@@ -143,7 +153,7 @@ data class TransitionView(
     val guard: String? = null
 )
 
-fun <S, E, C, A, R> visualize(
+public fun <S, E, C, A, R> visualize(
     definition: StateMachineDefinition<S, E, C, A, R>
 ): Iterable<TransitionView> {
     val output = mutableListOf<TransitionView>()
@@ -164,7 +174,6 @@ private fun <A, C, E, R, S> makeStateMap(
     stateMap: StateMapDefinition<S, E, C, A, R>,
     output: MutableList<TransitionView>
 ) {
-    val states = stateMap.validStates
     stateMap.transitionRules.forEach { entry ->
         makeView(definition, stateMapName, entry.key.first.toString(), entry.key.second, entry.value, output)
     }
@@ -226,7 +235,7 @@ fun <S, E, C, A, R> makeView(
     makeView(definition, mapName, from?.toString(), event, rules?.transition, output)
 }
 
-fun plantUml(input: Iterable<TransitionView>): String {
+public fun plantUml(input: Iterable<TransitionView>): String {
     val sw = StringWriter()
     val output = PrintWriter(sw)
     output.println("@startuml")

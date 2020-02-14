@@ -3,8 +3,8 @@ package io.jumpco.open.example.kfsm
 import PacketReaderFSM
 import io.jumpco.open.kfsm.PayingTurnstileFSM
 import io.jumpco.open.kfsm.SecureTurnstileFSM
-import io.jumpco.open.kfsm.plantUml
-import io.jumpco.open.kfsm.visualize
+import io.jumpco.open.kfsm.viz.plantUml
+import io.jumpco.open.kfsm.viz.visualize
 import org.junit.Before
 import org.junit.Test
 import java.io.File
@@ -23,7 +23,8 @@ class VisualizeTurnstileTest {
     @Test
     fun produceVisualizationTurnstileFSM() {
         println("== TurnStile")
-        val visualisation = visualize(TurnstileFSM.definition)
+        val visualisation =
+            visualize(TurnstileFSM.definition)
         visualisation.forEach { v ->
             println("$v")
         }
@@ -33,7 +34,8 @@ class VisualizeTurnstileTest {
     @Test
     fun produceVisualizationPayingTurnstile() {
         println("== PayingTurnstile")
-        val visualisation = visualize(PayingTurnstileFSM.definition)
+        val visualisation =
+            visualize(PayingTurnstileFSM.definition)
         visualisation.forEach { v ->
             println("$v")
         }
@@ -43,7 +45,8 @@ class VisualizeTurnstileTest {
     @Test
     fun produceVisualizationSecureTurnstile() {
         println("== SecureTurnstile")
-        val visualisation = visualize(SecureTurnstileFSM.definition)
+        val visualisation =
+            visualize(SecureTurnstileFSM.definition)
         visualisation.forEach { v ->
             println("$v")
         }
@@ -53,7 +56,8 @@ class VisualizeTurnstileTest {
     @Test
     fun produceVisualizationPacketReader() {
         println("== PacketReader")
-        val visualisation = visualize(PacketReaderFSM.definition)
+        val visualisation =
+            visualize(PacketReaderFSM.definition)
         visualisation.forEach { v ->
             println("$v")
         }
