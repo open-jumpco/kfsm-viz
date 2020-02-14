@@ -44,7 +44,7 @@ class VisualStateMapDefinition(val name: String) {
 }
 
 object Parser {
-    internal fun printTreeDepth(parseTree: KotlinParseTree, writer: PrintWriter, depth: Int = 0) {
+    private fun printTreeDepth(parseTree: KotlinParseTree, writer: PrintWriter, depth: Int = 0) {
         repeat(depth) { writer.print("  ") }
         writer.print(parseTree.name)
         if (parseTree.text != null) {
@@ -57,7 +57,7 @@ object Parser {
         }
     }
 
-    internal fun stripQuotes(input: String): String {
+    private fun stripQuotes(input: String): String {
         return (if (input.startsWith("\"")) input.substring(1) else input).let {
             if (it.endsWith("\"")) {
                 it.substring(0 until it.length - 1)
@@ -67,7 +67,7 @@ object Parser {
         }
     }
 
-    internal fun printAllTree(parseTree: KotlinParseTree): String {
+    private fun printAllTree(parseTree: KotlinParseTree): String {
         val sw = StringWriter()
         val pw = PrintWriter(sw)
         printTreeDepth(parseTree, pw)
@@ -76,8 +76,8 @@ object Parser {
         return sw.toString()
     }
 
-    internal val spacesAround = setOf("equalityOperator", "comparisonOperator")
-    internal fun printTree(parseTree: KotlinParseTree, includeSemis: Boolean = true): String {
+    private val spacesAround = setOf("equalityOperator", "comparisonOperator")
+    private fun printTree(parseTree: KotlinParseTree, includeSemis: Boolean = true): String {
         val builder = StringBuilder(0)
         when {
             parseTree.name == "semis" -> if (includeSemis) builder.append(';') else builder.append("")
@@ -113,7 +113,7 @@ object Parser {
         return result
     }
 
-    internal fun isParent(parent: KotlinParseTree, child: KotlinParseTree): Boolean {
+    private fun isParent(parent: KotlinParseTree, child: KotlinParseTree): Boolean {
         return if (parent.equals(child)) {
             true
         } else {
@@ -121,7 +121,7 @@ object Parser {
         }
     }
 
-    internal fun parserStateMap(name: String, stateMapTree: KotlinParseTree): VisualStateMapDefinition {
+    private fun parserStateMap(name: String, stateMapTree: KotlinParseTree): VisualStateMapDefinition {
         val result = VisualStateMapDefinition(name)
         val stateMaps = stateMapTree.children.flatMap {
             findExpressionWithIdentifier("stateMap", it)
@@ -152,7 +152,7 @@ object Parser {
         return result
     }
 
-    internal fun parseStateTransition(stateName: String, parseTree: KotlinParseTree): VisualTransition {
+    private fun parseStateTransition(stateName: String, parseTree: KotlinParseTree): VisualTransition {
         val result = VisualTransition(stripQuotes(stateName))
         // println("parseStateTransition:\n${parseTree}\n")
         val onEventExp = findNodeByType("Identifier", parseTree).first()
@@ -276,7 +276,7 @@ object Parser {
         return result
     }
 
-    internal fun findNodeByType(type: String, parseTree: KotlinParseTree): Iterable<KotlinParseTree> {
+    private fun findNodeByType(type: String, parseTree: KotlinParseTree): Iterable<KotlinParseTree> {
         val result = mutableListOf<KotlinParseTree>()
         if (parseTree.name == type) {
             result.add(parseTree)
@@ -289,7 +289,7 @@ object Parser {
         return result
     }
 
-    internal fun findChildWithName(name: String, type: String, parseTree: KotlinParseTree): Iterable<KotlinParseTree> {
+    private fun findChildWithName(name: String, type: String, parseTree: KotlinParseTree): Iterable<KotlinParseTree> {
         val result = mutableListOf<KotlinParseTree>()
         if (parseTree.name == name && parseTree.text == type) {
             result.add(parseTree)
@@ -300,7 +300,7 @@ object Parser {
         return result
     }
 
-    internal fun findChildWithName(
+    private fun findChildWithName(
         name: String,
         type: Set<String>,
         parseTree: KotlinParseTree
@@ -315,7 +315,7 @@ object Parser {
         return result
     }
 
-    internal fun findNodeWithTypeAndWithIdentifier(
+    private fun findNodeWithTypeAndWithIdentifier(
         type: String,
         identifier: Set<String>,
         parseTree: KotlinParseTree
@@ -326,7 +326,7 @@ object Parser {
         return identifierNodes
     }
 
-    internal fun findNodeWithTypeAndWithIdentifier(
+    private fun findNodeWithTypeAndWithIdentifier(
         type: String,
         identifier: String,
         parseTree: KotlinParseTree
@@ -337,21 +337,21 @@ object Parser {
         return identifierNodes
     }
 
-    internal fun findExpressionWithIdentifier(
+    private fun findExpressionWithIdentifier(
         identifier: String,
         parseTree: KotlinParseTree
     ): Iterable<KotlinParseTree> {
         return findNodeWithTypeAndWithIdentifier("expression", identifier, parseTree)
     }
 
-    internal fun findExpressionWithIdentifier(
+    private fun findExpressionWithIdentifier(
         identifier: Set<String>,
         parseTree: KotlinParseTree
     ): Iterable<KotlinParseTree> {
         return findNodeWithTypeAndWithIdentifier("expression", identifier, parseTree)
     }
 
-    internal fun findClass(className: String, parseTree: KotlinParseTree): KotlinParseTree {
+    private fun findClass(className: String, parseTree: KotlinParseTree): KotlinParseTree {
         val classNode = findNodeWithTypeAndWithIdentifier("classDeclaration", className, parseTree)
         return classNode.first()
     }

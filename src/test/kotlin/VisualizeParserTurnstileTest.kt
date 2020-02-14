@@ -2,6 +2,7 @@ package io.jumpco.open.example.kfsm
 
 import io.jumpco.open.kfsm.viz.Visualization.plantUml
 import io.jumpco.open.kfsm.viz.Parser.parseStateMachine
+import io.jumpco.open.kfsm.viz.Visualization.asciiDoc
 
 import org.junit.Before
 import org.junit.Test
