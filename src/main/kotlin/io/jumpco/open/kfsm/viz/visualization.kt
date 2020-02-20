@@ -43,6 +43,11 @@ object Visualization {
         output.println("@startuml")
         output.println("skinparam StateFontName Helvetica")
         output.println("skinparam defaultFontName Monospaced")
+        output.println("""
+            skinparam state {
+                BackgroundColor LightBlue
+            }
+        """.trimIndent())
         statemachine.stateMaps.filter { it.value.name != statemachine.name }.forEach { stateMap ->
             output.println("state ${stateMap.value.name} {")
             stateMap.value.transitions.forEach {

@@ -1,6 +1,9 @@
 @startuml
 skinparam StateFontName Helvetica
 skinparam defaultFontName Monospaced
+skinparam state {
+    BackgroundColor LightBlue
+}
 state PacketReaderFSM {
 [*] --> RCVPCKT : CTRL [{it == CharacterConstants.SOH}]
 RCVPCKT --> RCVDATA : CTRL [{it == CharacterConstants.STX}]\l<<action>> {\laddField()\l}

@@ -1,6 +1,9 @@
 @startuml
 skinparam StateFontName Helvetica
 skinparam defaultFontName Monospaced
+skinparam state {
+    BackgroundColor LightBlue
+}
 state coins {
 COINS --> UNLOCKED : <<automatic>> [{coins > requiredCoins}]\l<<action>> {\lreturnCoin(coins-requiredCoins)\lunlock()\lreset()\l}
 COINS --> UNLOCKED : <<automatic>> [{coins == requiredCoins}]\l<<action>> {\lunlock()\lreset()\l}
