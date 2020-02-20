@@ -1,9 +1,7 @@
 package io.jumpco.open.kfsm.viz
 
 import io.jumpco.open.kfsm.TransitionType
-import io.jumpco.open.kfsm.TransitionType.NORMAL
-import io.jumpco.open.kfsm.TransitionType.POP
-import io.jumpco.open.kfsm.TransitionType.PUSH
+import io.jumpco.open.kfsm.TransitionType.*
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import org.jetbrains.kotlin.spec.grammar.tools.parseKotlinCode
 import org.jetbrains.kotlin.spec.grammar.tools.tokenizeKotlinCode
@@ -38,7 +36,9 @@ class VisualStateMapDefinition(val name: String) {
     val events: MutableSet<String> = mutableSetOf()
     val transitions: MutableList<VisualTransition> = mutableListOf()
     override fun toString(): String {
-        return "VisualStateMapDefinition(name='$name', states=$states, events=$events, transitions=${transitions.joinToString("\n")})"
+        return "VisualStateMapDefinition(name='$name', states=$states, events=$events, transitions=${transitions.joinToString(
+            "\n"
+        )})"
     }
 
 }
@@ -81,7 +81,7 @@ object Parser {
         val builder = StringBuilder(0)
         when {
             parseTree.name == "semis" -> if (includeSemis) builder.append(';') else builder.append("")
-            parseTree.text != null    -> builder.append(parseTree.text)
+            parseTree.text != null -> builder.append(parseTree.text)
         }
         if (spacesAround.contains(parseTree.name)) {
             builder.append(' ')
@@ -95,6 +95,7 @@ object Parser {
         return builder.toString()
     }
 
+    @JvmStatic
     fun parseStateMachine(parentClass: String, sourceFile: File): VisualStateMachineDefinion {
         val tokens = tokenizeKotlinCode(sourceFile.readText())
         val parseTree = parseKotlinCode(tokens)
@@ -108,8 +109,8 @@ object Parser {
             parserStateMap(name, stateMap)
         }.associateBy { it.name }
         result.stateMaps += stateMaps
-        result.stateMaps["default"] =
-            parserStateMap("default", stateMachine)
+        result.stateMaps[parentClass] =
+            parserStateMap(parentClass, stateMachine)
         return result
     }
 
@@ -187,7 +188,7 @@ object Parser {
         }
         // println("$onEventText:$stringArgs")
         when {
-            onEventText == "onEvent"       -> {
+            onEventText == "onEvent" -> {
                 val toIdx = stringArgs.indexOf("to")
                 if (toIdx > 0) {
                     result.event = stringArgs[toIdx - 1]
@@ -197,19 +198,19 @@ object Parser {
                 }
                 result.type = NORMAL
             }
-            onEventText == "automatic"     -> {
+            onEventText == "automatic" -> {
                 when {
                     stringArgs.size == 1 -> {
                         result.target = stringArgs[0]
                     }
-                    else                 -> {
+                    else -> {
                         error("Unexpected number of arguments for automaticPop:$stringArgs")
                     }
                 }
                 result.automatic = true
                 result.type = NORMAL
             }
-            onEventText == "automaticPop"  -> {
+            onEventText == "automaticPop" -> {
                 when {
                     stringArgs.size == 2 -> {
                         result.targetMap = stringArgs[0]
@@ -218,7 +219,7 @@ object Parser {
                     stringArgs.size == 1 -> {
                         result.target = stringArgs[0]
                     }
-                    else                 -> {
+                    else -> {
                         error("Unexpected number of arguments for automaticPop:$stringArgs")
                     }
                 }
@@ -233,16 +234,16 @@ object Parser {
                 result.automatic = true
                 result.type = PUSH
             }
-            onEventText == "onEventPop"    -> {
+            onEventText == "onEventPop" -> {
                 when (stringArgs.size) {
-                    1    -> {
+                    1 -> {
                         result.event = stringArgs[1]
                     }
-                    2    -> {
+                    2 -> {
                         result.event = stringArgs[0]
                         result.target = stringArgs[1]
                     }
-                    3    -> {
+                    3 -> {
                         result.event = stringArgs[0]
                         result.targetMap = stringArgs[1]
                         result.target = stringArgs[2]
@@ -253,9 +254,9 @@ object Parser {
                 }
                 result.type = POP
             }
-            onEventText == "onEventPush"   -> {
+            onEventText == "onEventPush" -> {
                 when (stringArgs.size) {
-                    3    -> {
+                    3 -> {
                         result.event = stringArgs[0]
                         result.targetMap = stringArgs[1]
                         result.target = stringArgs[2]
@@ -352,7 +353,8 @@ object Parser {
     }
 
     private fun findClass(className: String, parseTree: KotlinParseTree): KotlinParseTree {
-        val classNode = findNodeWithTypeAndWithIdentifier("classDeclaration", className, parseTree)
+        val classNode = findNodeWithTypeAndWithIdentifier("classDeclaration", className, parseTree).toList()
+        require(classNode.isNotEmpty()) { "Expected to find classDeclaration for $className in $parseTree" }
         return classNode.first()
     }
 }

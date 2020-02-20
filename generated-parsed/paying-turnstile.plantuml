@@ -6,7 +6,7 @@ COINS --> UNLOCKED : <<automatic>> [{coins > requiredCoins}]\l<<action>> {\lretu
 COINS --> UNLOCKED : <<automatic>> [{coins == requiredCoins}]\l<<action>> {\lunlock()\lreset()\l}
 COINS --> COINS : COIN\l<<action>> {\lcoin(it)\lif(coins < requiredCoins){\lprintln("Please add ${requiredCoins-coins}")\l}\l}
 }
-state default {
+state PayingTurnstileFSM {
 LOCKED --> COINS : COIN\l<<action>> {\lcoin(it)\lunlock()\lreset()\l}
 LOCKED --> COINS : COIN [{requiredCoins >= coins+(it?:error("argument required"))}]\l<<action>> {\lcoin(it)\lprintln("Coins=$coins, Please add ${requiredCoins-coins}")\l}
 UNLOCKED --> UNLOCKED : COIN\l<<action>> {\lreturnCoin(coin(it))\l}

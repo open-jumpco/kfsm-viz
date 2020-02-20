@@ -1,7 +1,7 @@
 @startuml
 skinparam StateFontName Helvetica
 skinparam defaultFontName Monospaced
-state default {
+state PacketReaderFSM {
 [*] --> RCVPCKT : CTRL [{it == CharacterConstants.SOH}]
 RCVPCKT --> RCVDATA : CTRL [{it == CharacterConstants.STX}]\l<<action>> {\laddField()\l}
 RCVPCKT --> RCVCHK : BYTE\l<<action>> {\laddChecksum(it)\l}

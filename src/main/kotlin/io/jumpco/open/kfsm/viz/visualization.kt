@@ -36,21 +36,21 @@ object Visualization {
         }
         output.println()
     }
-
+    @JvmStatic
     public fun plantUml(statemachine: VisualStateMachineDefinion): String {
         val sw = StringWriter()
         val output = PrintWriter(sw)
         output.println("@startuml")
         output.println("skinparam StateFontName Helvetica")
         output.println("skinparam defaultFontName Monospaced")
-        statemachine.stateMaps.filter { it.value.name != "default" }.forEach { stateMap ->
+        statemachine.stateMaps.filter { it.value.name != statemachine.name }.forEach { stateMap ->
             output.println("state ${stateMap.value.name} {")
             stateMap.value.transitions.forEach {
                 printPlantUmlTransition(it, output)
             }
             output.println("}")
         }
-        statemachine.stateMaps.filter { it.value.name == "default" }.forEach { stateMap ->
+        statemachine.stateMaps.filter { it.value.name == statemachine.name }.forEach { stateMap ->
             output.println("state ${stateMap.value.name} {")
             stateMap.value.transitions.forEach {
                 printPlantUmlTransition(it, output)
@@ -62,14 +62,14 @@ object Visualization {
         sw.flush()
         return sw.toString()
     }
-
+    @JvmStatic
     public fun asciiDoc(statemachine: VisualStateMachineDefinion): String {
         val sw = StringWriter()
         val output = PrintWriter(sw)
         output.println("== ${statemachine.name} State Chart")
         output.println()
 
-        statemachine.stateMaps.filter { it.value.name != "default" }.forEach { stateMap ->
+        statemachine.stateMaps.filter { it.value.name != statemachine.name }.forEach { stateMap ->
             output.println("=== State Map ${stateMap.value.name}")
             output.println()
             output.println(
@@ -84,8 +84,8 @@ object Visualization {
             output.println("|===")
             output.println()
         }
-        statemachine.stateMaps.filter { it.value.name == "default" }.forEach { stateMap ->
-            output.println("=== Default State Map")
+        statemachine.stateMaps.filter { it.value.name == statemachine.name }.forEach { stateMap ->
+            output.println("=== ${statemachine.name} State Map")
             output.println()
             output.println(
                 """

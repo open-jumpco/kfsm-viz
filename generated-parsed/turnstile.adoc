@@ -1,6 +1,6 @@
 == TurnstileFSM State Chart
 
-=== Default State Map
+=== TurnstileFSM State Map
 
 |===
 | Start | Event[Guard] | Target | Action

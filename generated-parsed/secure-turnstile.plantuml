@@ -1,7 +1,7 @@
 @startuml
 skinparam StateFontName Helvetica
 skinparam defaultFontName Monospaced
-state default {
+state SecureTurnstileFSM {
 LOCKED --> LOCKED : CARD [{cardId->requireNotNull(cardId);isOverrideCard(cardId)&&overrideActive;}]\l<<action>> {\lcancelOverride()\l}
 LOCKED --> LOCKED : CARD [{cardId->requireNotNull(cardId);isOverrideCard(cardId);}]\l<<action>> {\lactivateOverride()\l}
 LOCKED --> UNLOCKED : CARD [{cardId->requireNotNull(cardId);overrideActive||isValidCard(cardId);}]\l<<action>> {\lunlock()\l}

@@ -1,6 +1,6 @@
 == PacketReaderFSM State Chart
 
-=== Default State Map
+=== PacketReaderFSM State Map
 
 |===
 | Start | Event[Guard] | Target | Action

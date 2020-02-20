@@ -1,6 +1,6 @@
 == SecureTurnstileFSM State Chart
 
-=== Default State Map
+=== SecureTurnstileFSM State Map
 
 |===
 | Start | Event[Guard] | Target | Action

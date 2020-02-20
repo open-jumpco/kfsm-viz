@@ -21,7 +21,7 @@
 |  `{coin(it)if(coins < requiredCoins){println("Please add ${requiredCoins-coins}")}}`
 |===
 
-=== Default State Map
+=== PayingTurnstileFSM State Map
 
 |===
 | Start | Event[Guard] | Target | Action
