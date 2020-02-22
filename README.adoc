@@ -18,7 +18,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    testImplementation 'io.jumpco.open:kfsm-viz:0.9.0-SNAPSHOT'
+    testImplementation 'io.jumpco.open:kfsm-viz:1.0.1'
 }
 -----
 
