@@ -9,6 +9,22 @@
 
 apply plugin: 'signing'
 apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka'
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/dokka"
+}
+
+task javadocJar(type: Jar) {
+    from dokka
+    archiveClassifier = 'javadoc'
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+}
 
 publishing {
     repositories {
@@ -28,6 +44,9 @@ publishing {
         mavenJava(MavenPublication) {
             artifactId = 'kfsm-viz'
             from components.java
+            artifact kotlinSourcesJar
+            artifact javadocJar
+
             pom {
                 name = 'KFSM Visualization'
                 description = 'Visualization library for KFSM finite state-machine definitions'

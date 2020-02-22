@@ -1,13 +1,40 @@
+/*
+ * Copyright (c) 2019. Open JumpCO
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package io.jumpco.open.kfsm.viz
 
-import io.jumpco.open.kfsm.TransitionType
-import io.jumpco.open.kfsm.TransitionType.*
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import org.jetbrains.kotlin.spec.grammar.tools.parseKotlinCode
 import org.jetbrains.kotlin.spec.grammar.tools.tokenizeKotlinCode
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
+
+import io.jumpco.open.kfsm.viz.TransitionType.*
+
+enum class TransitionType {
+    /**
+     * Transitions are triggered and may change to a new state or remain at the same state while performing an action.
+     */
+    NORMAL,
+    /**
+     * A push transition will place the current state map on a stack and make the named statemap the current map and change to the given state,
+     */
+    PUSH,
+    /**
+     * A pop transition will pop the stack and make the transition current. If the pop transition provided a new targetMap or targetState that will result in push or normal transition behaviour.
+     */
+    POP,
+    /**
+     * A default transition will take place when no configured state/event pair matches.
+     */
+    DEFAULT
+}
 
 internal val stateMachineEventMethodNames =
     setOf("onEvent", "automatic", "automaticPop", "onEventPush", "onEventPop", "automaticPush")
@@ -27,7 +54,7 @@ data class VisualTransition(
     var targetMap: String? = null,
     var action: String? = null,
     var automatic: Boolean = false,
-    var type: TransitionType = NORMAL,
+    var type: TransitionType = TransitionType.NORMAL,
     var guard: String? = null
 )
 
