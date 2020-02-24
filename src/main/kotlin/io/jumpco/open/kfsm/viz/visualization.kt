@@ -138,14 +138,14 @@ object Visualization {
         output.print("| $event")
 
         if (transition.guard != null) {
-            val guard = transition.guard!!.replace("\n", "").replace("\r", "")
+            val guard = transition.guard!!.replace("\n", "; ").replace("\r", "")
             output.print(escapeCharacters(" `[$guard]`", "|"))
         }
         output.println()
         output.println("| $endName")
         output.print("| ")
         if (transition.action != null && transition.action?.trim() != "{}") {
-            val action = transition.action?.replace("\n", "")?.replace("\r", "")
+            val action = transition.action?.replace("\n", "; ")?.replace("\r", "")
             output.print(escapeCharacters(" `$action`", "|"))
         }
         output.println()

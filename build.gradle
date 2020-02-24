@@ -10,7 +10,7 @@ plugins {
 }
 
 group 'io.jumpco.open'
-version '1.0.1'
+version '1.0.2-SNAPSHOT'
 
 apply from: "$rootProject.projectDir/gradle/publish.gradle"
 
