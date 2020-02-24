@@ -8,76 +8,137 @@
 | [*]
 | CTRL `[{it == CharacterConstants.SOH}]`
 | RCVPCKT
-| 
+a| 
 
 | RCVPCKT
 | CTRL `[{it == CharacterConstants.STX}]`
 | RCVDATA
-|  `{addField()}`
+a| [source,kotlin]
+----
+{
+addField()
+}
+----
 
 | RCVPCKT
 | BYTE
 | RCVCHK
-|  `{addChecksum(it)}`
+a| [source,kotlin]
+----
+{
+addChecksum(it)
+}
+----
 
 | RCVDATA
 | BYTE
 | RCVDATA
-|  `{addByte(it)}`
+a| [source,kotlin]
+----
+{
+addByte(it)
+}
+----
 
 | RCVDATA
 | CTRL `[{it == CharacterConstants.ETX}]`
 | RCVPCKT
-|  `{endField()}`
+a| [source,kotlin]
+----
+{
+endField()
+}
+----
 
 | RCVDATA
 | ESC
 | RCVESC
-| 
+a| 
 
 | RCVESC
 | ESC
 | RCVDATA
-|  `{addByte(CharacterConstants.ESC)}`
+a| [source,kotlin]
+----
+{
+addByte(CharacterConstants.ESC)
+}
+----
 
 | RCVESC
 | CTRL
 | RCVDATA
-|  `{addByte(it)}`
+a| [source,kotlin]
+----
+{
+addByte(it)
+}
+----
 
 | RCVCHK
 | BYTE
 | RCVCHK
-|  `{addChecksum(it)}`
+a| [source,kotlin]
+----
+{
+addChecksum(it)
+}
+----
 
 | RCVCHK
 | ESC
 | RCVCHKESC
-| 
+a| 
 
 | RCVCHK
 | CTRL `[{it == CharacterConstants.EOT}]`
 | CHKSUM
-|  `{checksum()}`
+a| [source,kotlin]
+----
+{
+checksum()
+}
+----
 
 | CHKSUM
 | \<<automatic>> `[{!checksumValid}]`
 | [*]
-|  `{sendNACK()}`
+a| [source,kotlin]
+----
+{
+sendNACK()
+}
+----
 
 | CHKSUM
 | \<<automatic>> `[{checksumValid}]`
 | [*]
-|  `{sendACK()}`
+a| [source,kotlin]
+----
+{
+sendACK()
+}
+----
 
 | RCVCHKESC
 | ESC
 | RCVCHK
-|  `{addChecksum(CharacterConstants.ESC)}`
+a| [source,kotlin]
+----
+{
+addChecksum(CharacterConstants.ESC)
+}
+----
 
 | RCVCHKESC
 | CTRL
 | RCVCHK
-|  `{byte->require(byte != null)addChecksum(byte)}`
+a| [source,kotlin]
+----
+{byte->
+require(byte != null)
+addChecksum(byte)
+}
+----
 |===
 

@@ -8,31 +8,62 @@
 | LOCKED
 | CARD `[{cardId->requireNotNull(cardId);isOverrideCard(cardId)&&overrideActive;}]`
 | LOCKED
-|  `{cancelOverride()}`
+a| [source,kotlin]
+----
+{
+cancelOverride()
+}
+----
 
 | LOCKED
 | CARD `[{cardId->requireNotNull(cardId);isOverrideCard(cardId);}]`
 | LOCKED
-|  `{activateOverride()}`
+a| [source,kotlin]
+----
+{
+activateOverride()
+}
+----
 
 | LOCKED
 | CARD `[{cardId->requireNotNull(cardId);overrideActive\|\|isValidCard(cardId);}]`
 | UNLOCKED
-|  `{unlock()}`
+a| [source,kotlin]
+----
+{
+unlock()
+}
+----
 
 | LOCKED
 | CARD `[{cardId->requireNotNull(cardId){"cardId is required"};!isValidCard(cardId);}]`
 | LOCKED
-|  `{cardId->requireNotNull(cardId)invalidCard(cardId)}`
+a| [source,kotlin]
+----
+{cardId->
+requireNotNull(cardId)
+invalidCard(cardId)
+}
+----
 
 | UNLOCKED
 | CARD `[{cardId->requireNotNull(cardId);isOverrideCard(cardId);}]`
 | LOCKED
-|  `{lock()}`
+a| [source,kotlin]
+----
+{
+lock()
+}
+----
 
 | UNLOCKED
 | PASS
 | LOCKED
-|  `{lock()}`
+a| [source,kotlin]
+----
+{
+lock()
+}
+----
 |===
 

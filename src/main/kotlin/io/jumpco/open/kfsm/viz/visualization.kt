@@ -28,7 +28,7 @@ object Visualization {
             output.print(" : $event")
         }
         if (transition.guard != null) {
-            val guard = transition.guard!!.replace("\n", "").replace("\r", "")
+            val guard = transition.guard!!.replace("\n", "\\l").replace("\r", "")
             output.print(" [$guard]")
         }
 
@@ -138,15 +138,18 @@ object Visualization {
         output.print("| $event")
 
         if (transition.guard != null) {
-            val guard = transition.guard!!.replace("\n", "; ").replace("\r", "")
+            val guard = transition.guard?.replace("\n", "")?.replace("\r", "")
             output.print(escapeCharacters(" `[$guard]`", "|"))
         }
         output.println()
         output.println("| $endName")
-        output.print("| ")
+        output.print("a| ")
         if (transition.action != null && transition.action?.trim() != "{}") {
-            val action = transition.action?.replace("\n", "; ")?.replace("\r", "")
-            output.print(escapeCharacters(" `$action`", "|"))
+            val action = transition.action?.replace("\r", "")
+            output.print(escapeCharacters("""[source,kotlin]
+----
+$action
+----""", "|"))
         }
         output.println()
     }

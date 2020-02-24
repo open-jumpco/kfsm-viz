@@ -8,17 +8,38 @@
 | COINS
 | \<<automatic>> `[{coins > requiredCoins}]`
 | UNLOCKED
-|  `{returnCoin(coins-requiredCoins)unlock()reset()}`
+a| [source,kotlin]
+----
+{
+returnCoin(coins-requiredCoins)
+unlock()
+reset()
+}
+----
 
 | COINS
 | \<<automatic>> `[{coins == requiredCoins}]`
 | UNLOCKED
-|  `{unlock()reset()}`
+a| [source,kotlin]
+----
+{
+unlock()
+reset()
+}
+----
 
 | COINS
 | COIN
 | COINS
-|  `{coin(it)if(coins < requiredCoins){println("Please add ${requiredCoins-coins}")}}`
+a| [source,kotlin]
+----
+{
+coin(it)
+if(coins < requiredCoins){
+println("Please add ${requiredCoins-coins}")
+}
+}
+----
 |===
 
 === PayingTurnstileFSM State Map
@@ -29,21 +50,44 @@
 | LOCKED
 | COIN
 | COINS
-|  `{coin(it)unlock()reset()}`
+a| [source,kotlin]
+----
+{
+coin(it)
+unlock()
+reset()
+}
+----
 
 | LOCKED
 | COIN `[{requiredCoins >= coins+(it?:error("argument required"))}]`
 | COINS
-|  `{coin(it)println("Coins=$coins, Please add ${requiredCoins-coins}")}`
+a| [source,kotlin]
+----
+{
+coin(it)
+println("Coins=$coins, Please add ${requiredCoins-coins}")
+}
+----
 
 | UNLOCKED
 | COIN
 | UNLOCKED
-|  `{returnCoin(coin(it))}`
+a| [source,kotlin]
+----
+{
+returnCoin(coin(it))
+}
+----
 
 | UNLOCKED
 | PASS
 | LOCKED
-|  `{lock()}`
+a| [source,kotlin]
+----
+{
+lock()
+}
+----
 |===
 
