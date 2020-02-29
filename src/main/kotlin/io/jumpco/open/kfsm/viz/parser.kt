@@ -8,14 +8,13 @@
  */
 package io.jumpco.open.kfsm.viz
 
+import io.jumpco.open.kfsm.viz.TransitionType.*
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
 import org.jetbrains.kotlin.spec.grammar.tools.parseKotlinCode
 import org.jetbrains.kotlin.spec.grammar.tools.tokenizeKotlinCode
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
-
-import io.jumpco.open.kfsm.viz.TransitionType.*
 
 enum class TransitionType {
     /**
@@ -37,7 +36,20 @@ enum class TransitionType {
 }
 
 internal val stateMachineEventMethodNames =
-    setOf("onEvent", "automatic", "automaticPop", "onEventPush", "onEventPop", "automaticPush")
+    setOf(
+        "onEvent",
+        "automatic",
+        "automaticPop",
+        "onEventPush",
+        "onEventPop",
+        "automaticPush",
+        "timeout",
+        "timeoutPop",
+        "timeoutPush"
+    )
+
+internal val stateMachineCreatorMethodNames =
+    setOf("stateMachine", "asyncStateMachine", "functionalStateMachine", "asyncFunctionalStateMachine")
 
 class VisualStateMachineDefinion(val name: String) {
     val stateMaps: MutableMap<String, VisualStateMapDefinition> = mutableMapOf()
@@ -54,6 +66,7 @@ data class VisualTransition(
     var targetMap: String? = null,
     var action: String? = null,
     var automatic: Boolean = false,
+    var timeout: Long? = null,
     var type: TransitionType = TransitionType.NORMAL,
     var guard: String? = null
 )
@@ -127,7 +140,8 @@ object Parser {
         val tokens = tokenizeKotlinCode(sourceFile.readText())
         val parseTree = parseKotlinCode(tokens)
         val classNode = findClass(parentClass, parseTree)
-        val stateMachine = findExpressionWithIdentifier("stateMachine", classNode).first()
+        // TODO search for whenState and find parent function
+        val stateMachine = findExpressionWithIdentifier(stateMachineCreatorMethodNames, classNode).first()
         val result = VisualStateMachineDefinion(parentClass)
         val stateMaps = stateMachine.children.flatMap {
             findExpressionWithIdentifier("stateMap", it)
@@ -261,6 +275,52 @@ object Parser {
                 result.automatic = true
                 result.type = PUSH
             }
+            onEventText == "timeout" -> {
+                when {
+                    stringArgs.size == 1 -> {
+                        result.target = stringArgs[0]
+                    }
+                    stringArgs.size == 2 -> {
+                        result.target = stringArgs[0]
+                        result.timeout = stringArgs[1].toLong()
+                    }
+                    else -> {
+                        error("Unexpected number of arguments for timeout:$stringArgs")
+                    }
+                }
+                result.automatic = false
+                result.type = NORMAL
+                result.event = "<<timeout>>[${result.timeout}]"
+            }
+            onEventText == "timeoutPop" -> {
+                when {
+                    stringArgs.size == 3 -> {
+                        result.targetMap = stringArgs[0]
+                        result.target = stringArgs[1]
+                        result.timeout = stringArgs[2].toLong()
+                    }
+                    stringArgs.size == 2 -> {
+                        result.target = stringArgs[0]
+                        result.timeout = stringArgs[1].toLong()
+                    }
+                    else -> {
+                        error("Unexpected number of arguments for automaticPop:$stringArgs")
+                    }
+                }
+                result.automatic = false
+                result.type = POP
+                result.event = "<<timeout>>[${result.timeout}]"
+            }
+            onEventText == "timeoutPush" -> {
+
+                result.targetMap = stringArgs[0]
+                result.target = stringArgs[1]
+                result.timeout = stringArgs[2].toLong()
+                result.automatic = false
+                result.type = PUSH
+                result.event = "<<timeout>>[${result.timeout}]"
+            }
+
             onEventText == "onEventPop" -> {
                 when (stringArgs.size) {
                     1 -> {
