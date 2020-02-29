@@ -133,7 +133,7 @@ object Visualization {
                 ?: "\\<<unknown>>"
         val endName = if ("\\<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
             ?: transition.start ?: "\\<<unkown>>"
-        val event = if (transition.automatic) "\\<<automatic>>" else transition.event ?: "\\<<unknown>>"
+        val event = if (transition.automatic) "\\<<automatic>>" else transition.event?.replace("<<","\\<<") ?: "\\<<unknown>>"
         output.println("| $startName")
         output.print("| $event")
 
