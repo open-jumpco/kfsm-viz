@@ -290,7 +290,7 @@ object Parser {
                 }
                 result.automatic = false
                 result.type = NORMAL
-                result.event = "<<timeout>>[${result.timeout}]"
+                result.event = "<<timeout = ${result.timeout}>>"
             }
             onEventText == "timeoutPop" -> {
                 when {
@@ -309,7 +309,7 @@ object Parser {
                 }
                 result.automatic = false
                 result.type = POP
-                result.event = "<<timeout>>[${result.timeout}]"
+                result.event = "<<timeout = ${result.timeout}>>"
             }
             onEventText == "timeoutPush" -> {
 
@@ -318,13 +318,13 @@ object Parser {
                 result.timeout = stringArgs[2].toLong()
                 result.automatic = false
                 result.type = PUSH
-                result.event = "<<timeout>>[${result.timeout}]"
+                result.event = "<<timeout = ${result.timeout}>>"
             }
 
             onEventText == "onEventPop" -> {
                 when (stringArgs.size) {
                     1 -> {
-                        result.event = stringArgs[1]
+                        result.event = stringArgs[0]
                     }
                     2 -> {
                         result.event = stringArgs[0]

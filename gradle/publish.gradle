@@ -70,6 +70,14 @@ publishing {
                 scm {
                     url = project.vcs
                 }
+                withXml {
+                    Node pomNode = asNode()
+                    pomNode.dependencies.'*'.findAll() {
+                        it.artifactId.text() == 'kotlin-grammar-tools'
+                    }.each() {
+                        it.parent().remove(it)
+                    }
+                }
             }
         }
     }
