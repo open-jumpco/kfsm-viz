@@ -282,7 +282,7 @@ object Parser {
                     }
                     stringArgs.size == 2 -> {
                         result.target = stringArgs[0]
-                        result.timeout = stringArgs[1].toLong()
+                        result.timeout = parseLongLiteral(stringArgs[1])
                     }
                     else -> {
                         error("Unexpected number of arguments for timeout:$stringArgs")
@@ -362,6 +362,15 @@ object Parser {
             result.target = result.target?.substringAfter(".")
         }
         return result
+    }
+
+    private fun parseLongLiteral(input: String): Long {
+        val strValue = if (input.endsWith("L")) {
+            input.substringBefore("L")
+        } else {
+            input
+        }
+        return strValue.toLong()
     }
 
     private fun findNodeByType(type: String, parseTree: KotlinParseTree): Iterable<KotlinParseTree> {
