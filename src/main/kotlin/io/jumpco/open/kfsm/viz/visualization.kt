@@ -15,6 +15,10 @@ import io.jumpco.open.kfsm.viz.TransitionType.*
 import java.io.PrintWriter
 import java.io.StringWriter
 
+/**
+ * @author Corneil du Plessis
+ * @soundtrack Wolfgang Amadeus Mozart
+ */
 object Visualization {
     private fun printPlantUmlTransition(transition: VisualTransition, output: PrintWriter) {
         val startName = if (transition.type == DEFAULT) transition.startMap else

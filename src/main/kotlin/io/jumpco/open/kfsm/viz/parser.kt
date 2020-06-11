@@ -16,6 +16,10 @@ import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
 
+/**
+ * @author Corneil du Plessis
+ * @soundtrack Wolfgang Amadeus Mozart
+ */
 enum class TransitionType {
     /**
      * Transitions are triggered and may change to a new state or remain at the same state while performing an action.
