@@ -11,13 +11,9 @@ apply plugin: 'signing'
 apply plugin: 'maven-publish'
 apply plugin: 'org.jetbrains.dokka'
 
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/dokka"
-}
 
 task javadocJar(type: Jar) {
-    from dokka
+    from dokkaHtml.outputDirectory
     archiveClassifier = 'javadoc'
 }
 
