@@ -2,12 +2,12 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.21'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.30'
     id 'org.jetbrains.dokka' version '1.4.10.2'
 }
 
 group 'io.jumpco.open'
-version '1.4.0'
+version '1.4.3'
 
 apply from: "$rootProject.projectDir/gradle/publish.gradle"
 
