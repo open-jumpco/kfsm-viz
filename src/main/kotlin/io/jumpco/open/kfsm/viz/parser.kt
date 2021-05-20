@@ -25,14 +25,17 @@ enum class TransitionType {
      * Transitions are triggered and may change to a new state or remain at the same state while performing an action.
      */
     NORMAL,
+
     /**
      * A push transition will place the current state map on a stack and make the named statemap the current map and change to the given state,
      */
     PUSH,
+
     /**
      * A pop transition will pop the stack and make the transition current. If the pop transition provided a new targetMap or targetState that will result in push or normal transition behaviour.
      */
     POP,
+
     /**
      * A default transition will take place when no configured state/event pair matches.
      */
@@ -56,9 +59,12 @@ internal val stateMachineCreatorMethodNames =
     setOf("stateMachine", "asyncStateMachine", "functionalStateMachine", "asyncFunctionalStateMachine")
 
 class VisualStateMachineDefinion(val name: String) {
+    val invariants: MutableSet<String> = mutableSetOf()
     val stateMaps: MutableMap<String, VisualStateMapDefinition> = mutableMapOf()
     override fun toString(): String {
-        return "VisualStateMachineDefinion(name='$name', stateMaps=${stateMaps.values.joinToString("\n")})"
+        return """VisualStateMachineDefinion(name='$name', 
+invariants=${invariants.joinToString("\n")}, 
+stateMaps=${stateMaps.values.joinToString("\n")})"""
     }
 }
 
@@ -80,11 +86,12 @@ class VisualStateMapDefinition(val name: String) {
     val events: MutableSet<String> = mutableSetOf()
     val transitions: MutableList<VisualTransition> = mutableListOf()
     override fun toString(): String {
-        return "VisualStateMapDefinition(name='$name', states=$states, events=$events, transitions=${transitions.joinToString(
-            "\n"
-        )})"
+        return "VisualStateMapDefinition(name='$name', states=$states, events=$events, transitions=${
+            transitions.joinToString(
+                "\n"
+            )
+        })"
     }
-
 }
 
 object Parser {
@@ -147,6 +154,18 @@ object Parser {
         // TODO search for whenState and find parent function
         val stateMachine = findExpressionWithIdentifier(stateMachineCreatorMethodNames, classNode).first()
         val result = VisualStateMachineDefinion(parentClass)
+        val invariants = stateMachine.children.flatMap {
+            findExpressionWithIdentifier("invariant", it)
+        }.mapNotNull { invariant ->
+            val functionDecl = findNodeByType("callSuffix", invariant).first()
+            val actionLambda = functionDecl.children.find { it.name == "annotatedLambda" }
+            if (actionLambda != null) {
+                printTree(actionLambda, false)
+            } else {
+                null
+            }
+        }
+        result.invariants.addAll(invariants)
         val stateMaps = stateMachine.children.flatMap {
             findExpressionWithIdentifier("stateMap", it)
         }.map { stateMap ->
@@ -202,7 +221,7 @@ object Parser {
         val result = VisualTransition(stripQuotes(stateName))
         // println("parseStateTransition:\n${parseTree}\n")
         val onEventExp = findNodeByType("Identifier", parseTree).first()
-        val onEventText = onEventExp.text ?: error("Expected name from ${onEventExp}")
+        val onEventText = onEventExp.text ?: error("Expected name from $onEventExp")
         val functionDecl = findNodeByType("callSuffix", parseTree).first()
         val valueArg = findNodeByType("valueArguments", functionDecl).toList().first()
         val actionLambda = functionDecl.children.find { it.name == "annotatedLambda" }

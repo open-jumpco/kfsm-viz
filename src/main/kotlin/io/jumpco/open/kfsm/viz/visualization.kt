@@ -71,6 +71,13 @@ object Visualization {
             }
             output.println("}")
         }
+        if(statemachine.invariants.isNotEmpty()) {
+            output.println("note top of ${statemachine.name}")
+            statemachine.invariants.forEach {
+                output.println("<<invariant>> $it")
+            }
+            output.println("end note")
+        }
         output.println("@enduml")
         output.flush()
         sw.flush()
