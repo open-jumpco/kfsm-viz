@@ -1,5 +1,7 @@
 = KFSM Visualization
 
+This work is licensed under link:https://www.apache.org/licenses/LICENSE-2.0.html[Apache License 2.0]
+
 This project will explore many ways to visualize KFSM definitions.
 
 This project require Kotlin Grammar Tools in order to parse the code containing the FSM.
