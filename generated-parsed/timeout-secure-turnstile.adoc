@@ -47,7 +47,7 @@ invalidCard(cardId)
 ----
 
 | UNLOCKED
-| \<<timeout = 500>>
+| \<<timeout = TimerSecureTurnstile::timeout>>
 | LOCKED
 a| [source,kotlin]
 ----

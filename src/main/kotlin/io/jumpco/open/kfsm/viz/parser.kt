@@ -77,7 +77,7 @@ data class VisualTransition(
     var targetMap: String? = null,
     var action: String? = null,
     var automatic: Boolean = false,
-    var timeout: Long? = null,
+    var timeout: String? = null,
     var type: TransitionType = TransitionType.NORMAL,
     var guard: String? = null
 )
@@ -306,7 +306,7 @@ object Parser {
                     }
                     stringArgs.size == 2 -> {
                         result.target = stringArgs[0]
-                        result.timeout = parseLongLiteral(stringArgs[1])
+                        result.timeout = stringArgs[1]
                     }
                     else -> {
                         error("Unexpected number of arguments for timeout:$stringArgs")
@@ -321,11 +321,11 @@ object Parser {
                     stringArgs.size == 3 -> {
                         result.targetMap = stringArgs[0]
                         result.target = stringArgs[1]
-                        result.timeout = stringArgs[2].toLong()
+                        result.timeout = stringArgs[2]
                     }
                     stringArgs.size == 2 -> {
                         result.target = stringArgs[0]
-                        result.timeout = stringArgs[1].toLong()
+                        result.timeout = stringArgs[1]
                     }
                     else -> {
                         error("Unexpected number of arguments for automaticPop:$stringArgs")
@@ -339,7 +339,7 @@ object Parser {
 
                 result.targetMap = stringArgs[0]
                 result.target = stringArgs[1]
-                result.timeout = stringArgs[2].toLong()
+                result.timeout = stringArgs[2]
                 result.automatic = false
                 result.type = PUSH
                 result.event = "<<timeout = ${result.timeout}>>"
