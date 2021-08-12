@@ -8,11 +8,11 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'org.jetbrains.kotlin.jvm' version '1.5.10'
-    id 'org.jetbrains.dokka' version '1.4.32'
+    id 'org.jetbrains.dokka' version '1.5.0'
 }
 
 group 'io.jumpco.open'
-version '1.5.0'
+version '1.5.1'
 
 apply from: "$rootProject.projectDir/gradle/publish.gradle"
 
@@ -30,10 +30,12 @@ configurations {
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     compileOnly 'org.jetbrains.kotlin.spec.grammar.tools:kotlin-grammar-tools:0.1-OPEN-JUMPCO'
-    fatjar('org.jetbrains.kotlin.spec.grammar.tools:kotlin-grammar-tools:0.1-OPEN-JUMPCO')
+    fatjar('org.jetbrains.kotlin.spec.grammar.tools:kotlin-grammar-tools:0.1-OPEN-JUMPCO') {
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+    }
     testCompile 'org.jetbrains.kotlin.spec.grammar.tools:kotlin-grammar-tools:0.1-OPEN-JUMPCO'
     testCompile group: 'junit', name: 'junit', version: '4.13'
-    testCompile 'io.jumpco.open:kfsm-jvm:1.5.0'
+    testCompile 'io.jumpco.open:kfsm-jvm:1.5.1'
 }
 
 jar {
