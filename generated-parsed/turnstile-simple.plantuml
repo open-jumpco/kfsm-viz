@@ -1,0 +1,12 @@
+@startuml
+skinparam StateFontName Helvetica
+skinparam defaultFontName Monospaced
+skinparam state {
+    BackgroundColor LightBlue
+}
+state TurnstileFSM {
+LOCKED --> UNLOCKED : COIN
+UNLOCKED --> LOCKED : PASS
+UNLOCKED --> UNLOCKED : COIN
+}
+@enduml

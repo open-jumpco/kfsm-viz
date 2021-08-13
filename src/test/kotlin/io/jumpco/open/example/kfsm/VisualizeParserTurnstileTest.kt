@@ -34,6 +34,7 @@ class VisualizeParserTurnstileTest {
         val visualisation = parseStateMachine("TurnstileFSM", File("src/test/kotlin/Turnstile.kt"))
         println(visualisation)
         File("generated-parsed", "turnstile.plantuml").writeText(plantUml(visualisation))
+        File("generated-parsed", "turnstile-simple.plantuml").writeText(plantUml(visualisation, false))
         File("generated-parsed", "turnstile.adoc").writeText(asciiDoc(visualisation))
     }
 
@@ -43,6 +44,7 @@ class VisualizeParserTurnstileTest {
         val visualisation = parseStateMachine("PayingTurnstileFSM", File("src/test/kotlin/PayingTurnstile.kt"))
         println(visualisation)
         File("generated-parsed", "paying-turnstile.plantuml").writeText(plantUml(visualisation))
+        File("generated-parsed", "paying-turnstile-simple.plantuml").writeText(plantUml(visualisation, false))
         File("generated-parsed", "paying-turnstile.adoc").writeText(asciiDoc(visualisation))
     }
 
@@ -52,6 +54,7 @@ class VisualizeParserTurnstileTest {
         val visualisation = parseStateMachine("SecureTurnstileFSM", File("src/test/kotlin/SecureTurnstile.kt"))
         println(visualisation)
         File("generated-parsed", "secure-turnstile.plantuml").writeText(plantUml(visualisation))
+        File("generated-parsed", "secure-turnstile-simple.plantuml").writeText(plantUml(visualisation, false))
         File("generated-parsed", "secure-turnstile.adoc").writeText(asciiDoc(visualisation))
     }
 
@@ -61,14 +64,18 @@ class VisualizeParserTurnstileTest {
         val visualisation = parseStateMachine("PacketReaderFSM", File("src/test/kotlin/PacketReader.kt"))
         println(visualisation)
         File("generated-parsed", "packet-reader.plantuml").writeText(plantUml(visualisation))
+        File("generated-parsed", "packet-reader-simple.plantuml").writeText(plantUml(visualisation, false))
         File("generated-parsed", "packet-reader.adoc").writeText(asciiDoc(visualisation))
     }
+
     @Test
     fun produceVisualizationTimeoutSecureTurnstile() {
         println("== TimeoutSecureTurnstile")
-        val visualisation = parseStateMachine("TimerSecureTurnstileFSM", File("src/test/kotlin/TimeoutSecureTurnstile.kt"))
+        val visualisation =
+            parseStateMachine("TimerSecureTurnstileFSM", File("src/test/kotlin/TimeoutSecureTurnstile.kt"))
         println(visualisation)
         File("generated-parsed", "timeout-secure-turnstile.plantuml").writeText(plantUml(visualisation))
+        File("generated-parsed", "timeout-secure-turnstile-simple.plantuml").writeText(plantUml(visualisation, false))
         File("generated-parsed", "timeout-secure-turnstile.adoc").writeText(asciiDoc(visualisation))
     }
 

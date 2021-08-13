@@ -10,7 +10,6 @@
 package io.jumpco.open.kfsm.viz
 
 
-
 import io.jumpco.open.kfsm.viz.TransitionType.*
 
 import java.io.PrintWriter
@@ -21,7 +20,7 @@ import java.io.StringWriter
  * @soundtrack Wolfgang Amadeus Mozart
  */
 object Visualization {
-    private fun printPlantUmlTransition(transition: VisualTransition, output: PrintWriter) {
+    private fun printPlantUmlTransition(transition: VisualTransition, output: PrintWriter, includeDetail: Boolean) {
         val startName = if (transition.type == DEFAULT) transition.startMap else
             if ("<<start>>" == transition.start || "START" == transition.start) "[*]" else transition.start
                 ?: "<<unknown>>"
@@ -32,12 +31,12 @@ object Visualization {
         if (event != null) {
             output.print(" : $event")
         }
-        if (transition.guard != null) {
+        if (transition.guard != null && includeDetail) {
             val guard = transition.guard!!.replace("\n", "\\l").replace("\r", "")
             output.print(" [$guard]")
         }
 
-        if (transition.action != null && transition.action?.trim() != "{}") {
+        if (includeDetail && transition.action != null && transition.action?.trim() != "{}") {
             val action = transition.action?.replace("\n", "\\l")?.replace("\r", "")
             output.print("\\l<<action>> $action")
         }
@@ -45,7 +44,7 @@ object Visualization {
     }
 
     @JvmStatic
-    public fun plantUml(statemachine: VisualStateMachineDefinion): String {
+    public fun plantUml(statemachine: VisualStateMachineDefinion, includeDetail: Boolean = true): String {
         val sw = StringWriter()
         val output = PrintWriter(sw)
         output.println("@startuml")
@@ -61,18 +60,18 @@ object Visualization {
         statemachine.stateMaps.filter { it.value.name != statemachine.name }.forEach { stateMap ->
             output.println("state ${stateMap.value.name} {")
             stateMap.value.transitions.forEach {
-                printPlantUmlTransition(it, output)
+                printPlantUmlTransition(it, output, includeDetail)
             }
             output.println("}")
         }
         statemachine.stateMaps.filter { it.value.name == statemachine.name }.forEach { stateMap ->
             output.println("state ${stateMap.value.name} {")
             stateMap.value.transitions.forEach {
-                printPlantUmlTransition(it, output)
+                printPlantUmlTransition(it, output, includeDetail)
             }
             output.println("}")
         }
-        if(statemachine.invariants.isNotEmpty()) {
+        if (includeDetail && statemachine.invariants.isNotEmpty()) {
             output.println("note top of ${statemachine.name}")
             statemachine.invariants.forEach {
                 output.println("<<invariant>> $it")
@@ -145,7 +144,8 @@ object Visualization {
                 ?: "\\<<unknown>>"
         val endName = if ("\\<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
             ?: transition.start ?: "\\<<unkown>>"
-        val event = if (transition.automatic) "\\<<automatic>>" else transition.event?.replace("<<","\\<<") ?: "\\<<unknown>>"
+        val event =
+            if (transition.automatic) "\\<<automatic>>" else transition.event?.replace("<<", "\\<<") ?: "\\<<unknown>>"
         output.println("| $startName")
         output.print("| $event")
 
@@ -158,10 +158,14 @@ object Visualization {
         output.print("a| ")
         if (transition.action != null && transition.action?.trim() != "{}") {
             val action = transition.action?.replace("\r", "")
-            output.print(escapeCharacters("""[source,kotlin]
+            output.print(
+                escapeCharacters(
+                    """[source,kotlin]
 ----
 $action
-----""", "|"))
+----""", "|"
+                )
+            )
         }
         output.println()
     }

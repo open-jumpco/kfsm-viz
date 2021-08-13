@@ -20,7 +20,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    testImplementation 'io.jumpco.open:kfsm-viz:1.4.32.3'
+    testImplementation 'io.jumpco.open:kfsm-viz:1.5.2'
 }
 -----
 
@@ -39,9 +39,15 @@ We request that you log an issue with the problematic FSM definition.
 fun produceVisualizationTurnstileFSM() {
     println("== TurnStile")
     val visualisation = parseStateMachine("TurnstileFSM", File("src/test/kotlin/Turnstile.kt"))
-    File("generated-parsed", "turnstile.plantuml").writeText(plantUml(visualisation))
+
+    File("generated-parsed", "turnstile.plantuml").writeText(plantUml(visualisation, true)) <1>
+
+    File("generated-parsed", "turnstile-simple.plantuml").writeText(plantUml(visualisation, false)) <2>
 }
 ----
+
+<1> Detailed Included in State Diagram
+<2> Detail like actions and guards ignored
 
 === AsciiDoctor State Table from VisualStatemachineDefinition
 
@@ -73,6 +79,10 @@ link:./src/test/kotlin/PayingTurnstile.kt[PayingTurnstile.kt]
 
 include::generated-parsed/paying-turnstile.adoc[]
 
+===== Simple State Diagram
+image::paying-turnstile-simple.png[]
+
+===== Detailed State Diagram
 image::paying_turnstile.png[]
 
 ==== Secure Turnstile FSM
@@ -81,6 +91,10 @@ link:./src/test/kotlin/SecureTurnstile.kt[SecureTurnstile.kt]
 
 include::generated-parsed/secure-turnstile.adoc[]
 
+===== Simple State Diagram
+image::secure-turnstile-simple.png[]
+
+===== Detailed State Diagram
 image::secure_turnstile.png[]
 
 ==== Packer Reader FSM
@@ -89,6 +103,10 @@ link:./src/test/kotlin/PacketReader.kt[PacketReader.kt]
 
 include::generated-parsed/packet-reader.adoc[]
 
+===== Simple State Diagram
+image::packet-reader-simple.png[]
+
+===== Detailed State Diagram
 image::packet_reader.png[]
 
 == FAQ
