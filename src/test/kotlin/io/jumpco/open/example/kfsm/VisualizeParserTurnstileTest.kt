@@ -29,6 +29,16 @@ class VisualizeParserTurnstileTest {
     }
 
     @Test
+    fun produceVisualizationSimpleTurnstileFSM() {
+        println("== Simple TurnStile")
+        val visualisation = parseStateMachine("SimpleTurnstileFSM", File("src/test/kotlin/SimpleTurnstile.kt"))
+        println(visualisation)
+        File("generated-parsed", "simple-turnstile.plantuml").writeText(plantUml(visualisation))
+        File("generated-parsed", "simple-turnstile-simple.plantuml").writeText(plantUml(visualisation, false))
+        File("generated-parsed", "simple-turnstile.adoc").writeText(asciiDoc(visualisation))
+    }
+
+    @Test
     fun produceVisualizationTurnstileFSM() {
         println("== TurnStile")
         val visualisation = parseStateMachine("TurnstileFSM", File("src/test/kotlin/Turnstile.kt"))

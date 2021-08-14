@@ -6,12 +6,9 @@ skinparam defaultFontStyle Bold
 skinparam state {
     FontStyle Bold
 }
-state SecureTurnstileFSM {
-LOCKED --> LOCKED : CARD
-LOCKED --> LOCKED : CARD
-LOCKED --> UNLOCKED : CARD
-LOCKED --> LOCKED : CARD
-UNLOCKED --> LOCKED : CARD
-UNLOCKED --> LOCKED : PASS
+state SimpleTurnstileFSM {
+LOCKED --> UNLOCKED : COIN -> {\l  unlock()\l}
+UNLOCKED --> LOCKED : PASS -> {\l  lock()\l}
+UNLOCKED --> UNLOCKED : COIN -> {\l  returnCoin()\l}
 }
 @enduml

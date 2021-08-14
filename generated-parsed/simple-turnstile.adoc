@@ -1,0 +1,38 @@
+== SimpleTurnstileFSM State Chart
+
+=== SimpleTurnstileFSM State Map
+
+|===
+| Start | Event[Guard] | Target | Action
+
+| LOCKED
+| COIN
+| UNLOCKED
+a| [source,kotlin]
+----
+{
+unlock()
+}
+----
+
+| UNLOCKED
+| PASS
+| LOCKED
+a| [source,kotlin]
+----
+{
+lock()
+}
+----
+
+| UNLOCKED
+| COIN
+| UNLOCKED
+a| [source,kotlin]
+----
+{
+returnCoin()
+}
+----
+|===
+

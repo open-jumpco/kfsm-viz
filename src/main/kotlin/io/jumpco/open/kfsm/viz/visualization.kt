@@ -70,7 +70,6 @@ object Visualization {
         output.println(
             """
             skinparam state {
-                FontColor Black
                 FontStyle Bold
             }
         """.trimIndent()

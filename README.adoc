@@ -65,49 +65,61 @@ fun produceVisualizationTurnstileFSM() {
 
 We generated an asciidoc table as well as a plantuml statemachine model.
 
-==== Turnstile FSM
+==== Simple Turnstile FSM
 
-link:./src/test/kotlin/Turnstile.kt[Turnstile.kt]
+link:./src/test/kotlin/SimpleTurnstile.kt[SimpleTurnstile.kt]
 
-include::generated-parsed/turnstile.adoc[]
+===== Simple State Diagram
 
-image::turnstile.png[]
+image::simple-turnstile-simple.svg[]
+
+===== Detailed State Diagram
+
+image::simple-turnstile.svg[]
+
+include::generated-parsed/simple-turnstile.adoc[]
 
 ==== Paying Turnstile FSM
 
 link:./src/test/kotlin/PayingTurnstile.kt[PayingTurnstile.kt]
 
-include::generated-parsed/paying-turnstile.adoc[]
-
 ===== Simple State Diagram
-image::paying-turnstile-simple.png[]
+
+image::paying-turnstile-simple.svg[]
 
 ===== Detailed State Diagram
-image::paying_turnstile.png[]
+
+image::paying-turnstile.svg[]
+
+include::generated-parsed/paying-turnstile.adoc[]
 
 ==== Secure Turnstile FSM
 
 link:./src/test/kotlin/SecureTurnstile.kt[SecureTurnstile.kt]
 
-include::generated-parsed/secure-turnstile.adoc[]
-
 ===== Simple State Diagram
-image::secure-turnstile-simple.png[]
+
+image::secure-turnstile-simple.svg[]
 
 ===== Detailed State Diagram
-image::secure_turnstile.png[]
+
+image::secure-turnstile.svg[]
+
+include::generated-parsed/secure-turnstile.adoc[]
 
 ==== Packer Reader FSM
 
 link:./src/test/kotlin/PacketReader.kt[PacketReader.kt]
 
-include::generated-parsed/packet-reader.adoc[]
-
 ===== Simple State Diagram
-image::packet-reader-simple.png[]
+
+image::packet-reader-simple.svg[]
 
 ===== Detailed State Diagram
-image::packet_reader.png[]
+
+image::packet-reader.svg[]
+
+include::generated-parsed/packet-reader.adoc[]
 
 == FAQ
 

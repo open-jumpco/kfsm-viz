@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="230px" preserveAspectRatio="none" style="width:289px;height:230px;background:#FFFFFF;" version="1.1" viewBox="0 0 289 230" width="289px" zoomAndPan="magnify"><defs><filter height="300%" id="f1lpwm63m8uhsw" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#F8F8F8" filter="url(#f1lpwm63m8uhsw)" height="211.6094" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="270.9586" x="7" y="7"/><rect fill="#FFFFFF" height="178" rx="12.5" ry="12.5" style="stroke:#FFFFFF;stroke-width:1.0;" width="264.9586" x="10" y="37.6094"/><line style="stroke:#383838;stroke-width:1.5;" x1="7" x2="277.9586" y1="34.6094" y2="34.6094"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="143" x="70.9793" y="26.5332">SecureTurnstileFSM</text><g id="SecureTurnstileFSM.LOCKED"><rect fill="#F8F8F8" filter="url(#f1lpwm63m8uhsw)" height="50" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="78" x="40.9591" y="46.6094"/><line style="stroke:#383838;stroke-width:1.5;" x1="40.9591" x2="118.9591" y1="74.2188" y2="74.2188"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="58" x="50.9591" y="66.1426">LOCKED</text></g><g id="SecureTurnstileFSM.UNLOCKED"><rect fill="#F8F8F8" filter="url(#f1lpwm63m8uhsw)" height="50" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="98" x="30.9591" y="150.6094"/><line style="stroke:#383838;stroke-width:1.5;" x1="30.9591" x2="128.9591" y1="178.2188" y2="178.2188"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="78" x="40.9591" y="170.1426">UNLOCKED</text></g><!--MD5=[5d767a4319f708ea6a1e1270c7244025]
+link LOCKED to LOCKED--><path d="M119.1213,68.3934 C129.2906,68.5904 136.9586,69.6624 136.9586,71.6094 C136.9586,73.1914 131.8966,74.1954 124.5436,74.6224 " fill="none" id="LOCKED-to-LOCKED" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="119.1213,74.8254,128.2647,78.4858,124.1178,74.6383,127.9653,70.4914,119.1213,74.8254" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="142.9586" y="76.6792">CARD</text><!--MD5=[5d767a4319f708ea6a1e1270c7244025]
+link LOCKED to LOCKED--><path d="M119.1892,65.7124 C148.6176,63.9904 180.9586,65.9554 180.9586,71.6094 C180.9586,76.9314 152.2966,78.9854 124.3846,77.7704 " fill="none" id="LOCKED-to-LOCKED-1" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="119.1892,77.5064,127.9741,81.9588,124.1827,77.7606,128.3809,73.9692,119.1892,77.5064" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="186.9586" y="76.6792">CARD</text><!--MD5=[c03bbcbe1ea2187b5aae6c6faf6bf9ae]
+link LOCKED to UNLOCKED--><path d="M40.821,94.3824 C34.0139,100.0374 27.8722,106.7832 23.9591,114.6094 C18,126.5275 23.8673,137.7448 33.7158,147.1829 " fill="none" id="LOCKED-to-UNLOCKED" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="37.5099,150.5776,33.47,141.5954,33.7837,147.2435,28.1356,147.5572,37.5099,150.5776" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="24.9591" y="128.6792">CARD</text><!--MD5=[5d767a4319f708ea6a1e1270c7244025]
+link LOCKED to LOCKED--><path d="M119.2572,63.9314 C164.1306,59.5534 224.9586,62.1134 224.9586,71.6094 C224.9586,80.7534 168.5616,83.4654 124.3146,79.7464 " fill="none" id="LOCKED-to-LOCKED-2" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="119.2572,79.2874,127.8593,84.0835,124.2368,79.7388,128.5815,76.1162,119.2572,79.2874" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="230.9586" y="76.6792">CARD</text><!--MD5=[33c2fb760a7074ec24359010ff9693f6]
+link UNLOCKED to LOCKED--><path d="M79.9591,150.2569 C79.9591,135.7211 79.9591,117.1694 79.9591,101.8448 " fill="none" id="UNLOCKED-to-LOCKED" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="79.9591,96.7824,75.9591,105.7824,79.9591,101.7824,83.9591,105.7824,79.9591,96.7824" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="80.9591" y="128.6792">CARD</text><!--MD5=[33c2fb760a7074ec24359010ff9693f6]
+link UNLOCKED to LOCKED--><path d="M105.5326,150.4938 C113.6479,139.9143 119.475,127.0824 114.9591,114.6094 C113.2627,109.9239 110.7901,105.3938 107.931,101.1525 " fill="none" id="UNLOCKED-to-LOCKED-1" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="104.9575,97.0124,106.9591,106.6557,107.8744,101.0734,113.4567,101.9887,104.9575,97.0124" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="116.9591" y="128.6792">PASS</text><!--MD5=[176cf7a678bd062d7c4fcba03bfc3b12]
+@startuml
+skinparam monochrome true
+skinparam StateFontName Helvetica
+skinparam defaultFontName Monospaced
+skinparam defaultFontStyle Bold
+skinparam state {
+    FontStyle Bold
+}
+state SecureTurnstileFSM {
+LOCKED - -> LOCKED : CARD
+LOCKED - -> LOCKED : CARD
+LOCKED - -> UNLOCKED : CARD
+LOCKED - -> LOCKED : CARD
+UNLOCKED - -> LOCKED : CARD
+UNLOCKED - -> LOCKED : PASS
+}
+@enduml
+
+PlantUML version 1.2021.7(Sun May 23 14:40:07 CAT 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+Language: en
+Country: ZA
+--></g></svg>

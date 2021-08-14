@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="230px" preserveAspectRatio="none" style="width:200px;height:230px;background:#FFFFFF;" version="1.1" viewBox="0 0 200 230" width="200px" zoomAndPan="magnify"><defs><filter height="300%" id="f1k3dm3diq42b5" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#F8F8F8" filter="url(#f1k3dm3diq42b5)" height="211.6094" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="181" x="7" y="7"/><rect fill="#FFFFFF" height="178" rx="12.5" ry="12.5" style="stroke:#FFFFFF;stroke-width:1.0;" width="175" x="10" y="37.6094"/><line style="stroke:#383838;stroke-width:1.5;" x1="7" x2="188" y1="34.6094" y2="34.6094"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="140" x="27.5" y="26.5332">SimpleTurnstileFSM</text><g id="SimpleTurnstileFSM.LOCKED"><rect fill="#F8F8F8" filter="url(#f1k3dm3diq42b5)" height="50" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="78" x="29" y="46.6094"/><line style="stroke:#383838;stroke-width:1.5;" x1="29" x2="107" y1="74.2188" y2="74.2188"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="58" x="39" y="66.1426">LOCKED</text></g><g id="SimpleTurnstileFSM.UNLOCKED"><rect fill="#F8F8F8" filter="url(#f1k3dm3diq42b5)" height="50" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="98" x="19" y="150.6094"/><line style="stroke:#383838;stroke-width:1.5;" x1="19" x2="117" y1="178.2188" y2="178.2188"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="78" x="29" y="170.1426">UNLOCKED</text></g><!--MD5=[c03bbcbe1ea2187b5aae6c6faf6bf9ae]
+link LOCKED to UNLOCKED--><path d="M49.2048,96.7774 C45.8263,102.3489 42.8076,108.4548 41,114.6094 C37.9015,125.1591 40.9505,136.2582 45.9619,146.0019 " fill="none" id="LOCKED-to-UNLOCKED" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="48.3875,150.3766,47.5213,140.5659,45.9628,146.0038,40.5249,144.4453,48.3875,150.3766" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="42" y="128.6792">COIN</text><!--MD5=[33c2fb760a7074ec24359010ff9693f6]
+link UNLOCKED to LOCKED--><path d="M72.7567,150.2649 C73.6888,144.4994 74.5244,138.3557 75,132.6094 C75.8324,122.5522 75.0499,111.5783 73.7491,101.7979 " fill="none" id="UNLOCKED-to-LOCKED" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="73.0274,96.8034,70.3557,106.2829,73.7425,101.752,78.2735,105.1387,73.0274,96.8034" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="76" y="128.6792">PASS</text><!--MD5=[d9263dcde7f2990f059c51f0359981af]
+link UNLOCKED to UNLOCKED--><path d="M117.0804,166.1742 C127.486,167.1323 135,170.2774 135,175.6094 C135,180.025 129.847,182.9408 122.166,184.3568 " fill="none" id="UNLOCKED-to-UNLOCKED" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="117.0804,185.0446,126.5352,187.8025,122.0353,184.3746,125.4632,179.8747,117.0804,185.0446" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="141" y="180.6792">COIN</text><!--MD5=[70237dae3f12167f082335280d3d6bd6]
+@startuml
+skinparam monochrome true
+skinparam StateFontName Helvetica
+skinparam defaultFontName Monospaced
+skinparam defaultFontStyle Bold
+skinparam state {
+    FontStyle Bold
+}
+state SimpleTurnstileFSM {
+LOCKED - -> UNLOCKED : COIN
+UNLOCKED - -> LOCKED : PASS
+UNLOCKED - -> UNLOCKED : COIN
+}
+@enduml
+
+PlantUML version 1.2021.7(Sun May 23 14:40:07 CAT 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+Language: en
+Country: ZA
+--></g></svg>

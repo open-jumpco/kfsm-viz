@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="401px" preserveAspectRatio="none" style="width:315px;height:401px;background:#FFFFFF;" version="1.1" viewBox="0 0 315 401" width="315px" zoomAndPan="magnify"><defs><filter height="300%" id="f1tsj3m1xszfdf" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[eda83f66e697e6a82d4f59efbe14dd2f]
+cluster coins--><rect fill="#F8F8F8" filter="url(#f1tsj3m1xszfdf)" height="230" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="287" x="7" y="159"/><rect fill="#FFFFFF" height="196.3906" rx="12.5" ry="12.5" style="stroke:#FFFFFF;stroke-width:1.0;" width="281" x="10" y="189.6094"/><line style="stroke:#383838;stroke-width:1.5;" x1="7" x2="294" y1="186.6094" y2="186.6094"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="38" x="131.5" y="177.5332">coins</text><!--MD5=[72d821c25f0eb57cd4e4aca2990b7e46]
+cluster PayingTurnstileFSM--><rect fill="#F8F8F8" filter="url(#f1tsj3m1xszfdf)" height="102" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="155" x="148" y="7"/><rect fill="#FFFFFF" height="68.3906" rx="12.5" ry="12.5" style="stroke:#FFFFFF;stroke-width:1.0;" width="149" x="151" y="37.6094"/><line style="stroke:#383838;stroke-width:1.5;" x1="148" x2="303" y1="34.6094" y2="34.6094"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="139" x="156" y="25.5332">PayingTurnstileFSM</text><g id="coins.COINS"><rect fill="#F8F8F8" filter="url(#f1tsj3m1xszfdf)" height="50" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="64" x="105" y="195"/><line style="stroke:#383838;stroke-width:1.5;" x1="105" x2="169" y1="222.6094" y2="222.6094"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="44" x="115" y="214.5332">COINS</text></g><g id="coins.UNLOCKED"><rect fill="#F8F8F8" filter="url(#f1tsj3m1xszfdf)" height="50" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="98" x="118" y="323"/><line style="stroke:#383838;stroke-width:1.5;" x1="118" x2="216" y1="350.6094" y2="350.6094"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="78" x="128" y="342.5332">UNLOCKED</text></g><g id="PayingTurnstileFSM.LOCKED"><rect fill="#F8F8F8" filter="url(#f1tsj3m1xszfdf)" height="50" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="78" x="172" y="43"/><line style="stroke:#383838;stroke-width:1.5;" x1="172" x2="250" y1="70.6094" y2="70.6094"/><text fill="#000000" font-family="Helvetica" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="58" x="182" y="62.5332">LOCKED</text></g><!--MD5=[489a7892458dbac9f7d2d3f1d120390f]
+link COINS to UNLOCKED--><path d="M104.802,232.715 C75.3932,245.351 38.7781,267.17 55,293 C67.8613,313.4791 90.9142,326.3756 112.776,334.4042 " fill="none" id="COINS-to-UNLOCKED" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="117.711,336.1434,110.5534,329.3781,112.9956,334.4806,107.893,336.9228,117.711,336.1434" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="88" x="56" y="289.0698">«automatic»</text><!--MD5=[489a7892458dbac9f7d2d3f1d120390f]
+link COINS to UNLOCKED--><path d="M142.784,245.294 C147.702,265.95 154.778,295.669 160.012,317.6514 " fill="none" id="COINS-to-UNLOCKED-1" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="161.233,322.7805,163.0397,313.0988,160.0749,317.9165,155.2572,314.9517,161.233,322.7805" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="88" x="155" y="289.0698">«automatic»</text><!--MD5=[e95c1cf331ed2c204aaf3b73fde9f70f]
+link COINS to COINS--><path d="M169.055,208.616 C187.2,206.393 204,210.187 204,220 C204,228.893 190.203,232.843 174.11,231.851 " fill="none" id="COINS-to-COINS" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="169.055,231.384,177.6488,236.1951,174.0338,231.844,178.3848,228.229,169.055,231.384" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="210" y="225.0698">COIN</text><!--MD5=[26bbedbc5621f2374cb324e59b4d4bff]
+link LOCKED to COINS--><path d="M171.673,87.558 C157.071,96.639 142.101,109.092 134,125 C123.909,144.816 125.404,170.153 129.014,189.528 " fill="none" id="LOCKED-to-COINS" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="130.08,194.825,132.227,185.213,129.0942,189.9231,124.3841,186.7903,130.08,194.825" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="135" y="139.0698">COIN</text><!--MD5=[26bbedbc5621f2374cb324e59b4d4bff]
+link LOCKED to COINS--><path d="M199.111,93.1 C186.057,119.561 165.107,162.027 151.2,190.216 " fill="none" id="LOCKED-to-COINS-1" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="148.86,194.96,156.4305,188.6602,151.0732,190.4765,149.2569,185.1191,148.86,194.96" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="184" y="139.0698">COIN</text><!--MD5=[d9263dcde7f2990f059c51f0359981af]
+link UNLOCKED to UNLOCKED--><path d="M216.18,336.0469 C235.195,335.5156 251,339.5 251,348 C251,355.7031 238.02,359.6976 221.433,359.9835 " fill="none" id="UNLOCKED-to-UNLOCKED" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="216.18,359.9531,225.157,364.0045,221.1799,359.9817,225.2027,356.0046,216.18,359.9531" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="257" y="353.0698">COIN</text><!--MD5=[33c2fb760a7074ec24359010ff9693f6]
+link UNLOCKED to LOCKED--><path d="M216.081,327.0621 C230.235,318.7456 244.002,307.5564 252,293 C286.879,229.52 250.836,142.175 227.52,97.635 " fill="none" id="UNLOCKED-to-LOCKED" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="225.166,93.201,225.8519,103.0259,227.51,97.6175,232.9184,99.2756,225.166,93.201" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="monospace" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="267" y="225.0698">PASS</text><!--MD5=[ea8616c22a96a9c073bc0db32ed2598f]
+@startuml
+skinparam monochrome true
+skinparam StateFontName Helvetica
+skinparam defaultFontName Monospaced
+skinparam defaultFontStyle Bold
+skinparam state {
+    FontStyle Bold
+}
+state coins {
+COINS - -> UNLOCKED : <<automatic>>
+COINS - -> UNLOCKED : <<automatic>>
+COINS - -> COINS : COIN
+}
+state PayingTurnstileFSM {
+LOCKED - -> COINS : COIN
+LOCKED - -> COINS : COIN
+UNLOCKED - -> UNLOCKED : COIN
+UNLOCKED - -> LOCKED : PASS
+}
+@enduml
+
+PlantUML version 1.2021.7(Sun May 23 14:40:07 CAT 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+Language: en
+Country: ZA
+--></g></svg>
