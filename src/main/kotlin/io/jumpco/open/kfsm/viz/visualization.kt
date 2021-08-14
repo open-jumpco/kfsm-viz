@@ -32,13 +32,28 @@ object Visualization {
             output.print(" : $event")
         }
         if (transition.guard != null && includeDetail) {
-            val guard = transition.guard!!.replace("\n", "\\l").replace("\r", "")
-            output.print(" [$guard]")
+            val guard = transition.guard!!.replace("\n", "\\l  ").replace("\r", "")
+            output.print(" [")
+            if (guard.endsWith("  }")) {
+                output.print(guard.substring(0, guard.length - 3))
+                output.print("}")
+            } else {
+                output.print(guard)
+            }
+            output.print("]")
         }
 
         if (includeDetail && transition.action != null && transition.action?.trim() != "{}") {
-            val action = transition.action?.replace("\n", "\\l")?.replace("\r", "")
-            output.print("\\l<<action>> $action")
+            val action = transition.action!!
+                .replace("\n", "\\l  ")
+                .replace("\r", "")
+            output.print(" -> ")
+            if (action.endsWith("  }") ?: false) {
+                output.print(action.substring(0, action.length - 3))
+                output.print("}")
+            } else {
+                output.print(action)
+            }
         }
         output.println()
     }
@@ -48,12 +63,15 @@ object Visualization {
         val sw = StringWriter()
         val output = PrintWriter(sw)
         output.println("@startuml")
+        output.println("skinparam monochrome true")
         output.println("skinparam StateFontName Helvetica")
         output.println("skinparam defaultFontName Monospaced")
+        output.println("skinparam defaultFontStyle Bold")
         output.println(
             """
             skinparam state {
-                BackgroundColor LightBlue
+                FontColor Black
+                FontStyle Bold
             }
         """.trimIndent()
         )
