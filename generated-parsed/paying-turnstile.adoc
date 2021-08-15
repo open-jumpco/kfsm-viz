@@ -1,51 +1,14 @@
 == PayingTurnstileFSM State Chart
 
-=== State Map coins
-
-|===
-| Start | Event[Guard] | Target | Action
-
-| COINS
-| \<<automatic>> `[{coins > requiredCoins}]`
-| UNLOCKED
-a| [source,kotlin]
-----
-{
-returnCoin(coins-requiredCoins)
-unlock()
-reset()
-}
-----
-
-| COINS
-| \<<automatic>> `[{coins == requiredCoins}]`
-| UNLOCKED
-a| [source,kotlin]
-----
-{
-unlock()
-reset()
-}
-----
-
-| COINS
-| COIN
-| COINS
-a| [source,kotlin]
-----
-{
-coin(it)
-if(coins < requiredCoins){
-println("Please add ${requiredCoins-coins}")
-}
-}
-----
-|===
-
 === PayingTurnstileFSM State Map
 
 |===
 | Start | Event[Guard] | Target | Action
+
+| <<start>>
+| 
+| LOCKED
+a| 
 
 | LOCKED
 | COIN
@@ -87,6 +50,48 @@ a| [source,kotlin]
 ----
 {
 lock()
+}
+----
+|===
+
+=== State Map coins
+
+|===
+| Start | Event[Guard] | Target | Action
+
+| COINS
+| \<<automatic>> `[{coins > requiredCoins}]`
+| UNLOCKED
+a| [source,kotlin]
+----
+{
+returnCoin(coins-requiredCoins)
+unlock()
+reset()
+}
+----
+
+| COINS
+| \<<automatic>> `[{coins == requiredCoins}]`
+| UNLOCKED
+a| [source,kotlin]
+----
+{
+unlock()
+reset()
+}
+----
+
+| COINS
+| COIN
+| COINS
+a| [source,kotlin]
+----
+{
+coin(it)
+if(coins < requiredCoins){
+println("Please add ${requiredCoins-coins}")
+}
 }
 ----
 |===

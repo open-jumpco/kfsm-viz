@@ -68,7 +68,6 @@ class SimpleTurnstileFSM(context: SimpleTurnstileContext) {
             SimpleTurnstileEvent.values().toSet(),
             SimpleTurnstileContext::class
         ) {
-            defaultInitialState = SimpleTurnstileState.LOCKED
             initialState { if (locked) SimpleTurnstileState.LOCKED else SimpleTurnstileState.UNLOCKED }
             default {
                 action { _, _, _ ->

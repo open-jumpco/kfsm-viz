@@ -78,7 +78,6 @@ class TimerSecureTurnstileFSM(private val secureTurnstile: TimerSecureTurnstile)
             TimerSecureTurnstile::class,
             Int::class
         ) {
-            defaultInitialState = SecureTurnstileStates.LOCKED
             initialState { if (locked) SecureTurnstileStates.LOCKED else SecureTurnstileStates.UNLOCKED }
             default {
                 action { _, _, _ ->

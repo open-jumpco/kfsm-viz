@@ -7,6 +7,7 @@ skinparam state {
     FontStyle Bold
 }
 state TurnstileFSM {
+[*] --> UNLOCKED
 LOCKED --> UNLOCKED : COIN -> {info->\l  require(info != null){"Info required"}\l  info.copy(locked=false,message="")\l}
 UNLOCKED --> LOCKED : PASS -> {info->\l  require(info != null){"Info required"}\l  info.copy(locked=true,message="")\l}
 UNLOCKED --> UNLOCKED : COIN -> {info->\l  require(info != null){"Info required"}\l  info.copy(message="Return Coin")\l}

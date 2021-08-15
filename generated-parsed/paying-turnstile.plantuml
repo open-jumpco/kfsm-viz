@@ -7,13 +7,14 @@ skinparam state {
     FontStyle Bold
 }
 state coins {
-COINS --> UNLOCKED : <<automatic>> [{coins > requiredCoins}] -> {\l  returnCoin(coins-requiredCoins)\l  unlock()\l  reset()\l}
-COINS --> UNLOCKED : <<automatic>> [{coins == requiredCoins}] -> {\l  unlock()\l  reset()\l}
+COINS --> UNLOCKED : <<automatic>> [coins > requiredCoins] -> {\l  returnCoin(coins-requiredCoins)\l  unlock()\l  reset()\l}
+COINS --> UNLOCKED : <<automatic>> [coins == requiredCoins] -> {\l  unlock()\l  reset()\l}
 COINS --> COINS : COIN -> {\l  coin(it)\l  if(coins < requiredCoins){\l  println("Please add ${requiredCoins-coins}")\l  }\l}
 }
 state PayingTurnstileFSM {
+[*] --> LOCKED
 LOCKED --> COINS : COIN -> {\l  coin(it)\l  unlock()\l  reset()\l}
-LOCKED --> COINS : COIN [{requiredCoins >= coins+(it?:error("argument required"))}] -> {\l  coin(it)\l  println("Coins=$coins, Please add ${requiredCoins-coins}")\l}
+LOCKED --> COINS : COIN [requiredCoins >= coins+(it?:error("argument required"))] -> {\l  coin(it)\l  println("Coins=$coins, Please add ${requiredCoins-coins}")\l}
 UNLOCKED --> UNLOCKED : COIN -> {\l  returnCoin(coin(it))\l}
 UNLOCKED --> LOCKED : PASS -> {\l  lock()\l}
 }

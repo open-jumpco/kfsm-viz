@@ -11,11 +11,13 @@ package io.jumpco.open.kfsm.viz
 
 import io.jumpco.open.kfsm.viz.TransitionType.*
 import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTree
+import org.jetbrains.kotlin.spec.grammar.tools.KotlinParseTreeNodeType
 import org.jetbrains.kotlin.spec.grammar.tools.parseKotlinCode
 import org.jetbrains.kotlin.spec.grammar.tools.tokenizeKotlinCode
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
+import kotlin.math.exp
 
 /**
  * @author Corneil du Plessis
@@ -64,7 +66,7 @@ class VisualStateMachineDefinion(val name: String) {
     val stateMaps: MutableMap<String, VisualStateMapDefinition> = mutableMapOf()
     override fun toString(): String {
         return """VisualStateMachineDefinion(name='$name', 
-invariants=${invariants.joinToString("\n")}, 
+invariants=${invariants.joinToString("\n")}, .
 stateMaps=${stateMaps.values.joinToString("\n")})"""
     }
 }
@@ -176,6 +178,45 @@ object Parser {
         result.stateMaps += stateMaps
         result.stateMaps[parentClass] =
             parserStateMap(parentClass, stateMachine)
+        val states = result.stateMaps.values.flatMap { it.states }.toSet()
+        val hasStart = result.stateMaps.values.flatMap { it.transitions }.filter { "<<start>>" == it.start || "START" == it.start }.isNotEmpty()
+        if(!hasStart) {
+            val startState = stateMachine.children.flatMap {
+                findExpressionWithIdentifier("initialState", it)
+            }.mapNotNull {
+                print("initialState=")
+                println(printTree(it))
+                val values = findNodeWithText(
+                    KotlinParseTreeNodeType.TERMINAL,
+                    "Identifier",
+                    it
+                ).filter { it.text != "initialState" }.toList()
+                if (values.isNotEmpty()) {
+                    val expr = stripQuotes(printTree(values.last()))
+                    val state = if (expr.contains('.')) {
+                        expr.substringAfterLast(".")
+                    } else {
+                        expr
+                    }
+                    if (states.contains(state)) {
+                        state
+                    } else {
+                        null
+                    }
+                } else {
+                    null
+                }
+            }
+            if (startState.isNotEmpty()) {
+                val startStateName = startState.first()!!
+                val stateMachineDefinition = result.stateMaps[result.name]!!
+                if (stateMachineDefinition.states.contains(startStateName)) {
+                    stateMachineDefinition.transitions.add(VisualTransition("<<start>>", null, startStateName))
+                } else {
+                    println("$startState isn't a known state")
+                }
+            }
+        }
         return result
     }
 
@@ -397,6 +438,21 @@ object Parser {
         return strValue.toLong()
     }
 
+    private fun findNodeWithText(
+        type: KotlinParseTreeNodeType,
+        name: String,
+        parseTree: KotlinParseTree
+    ): Iterable<KotlinParseTree> {
+        val result = mutableListOf<KotlinParseTree>()
+        if (parseTree.type == type && parseTree.text != null && parseTree.name == name) {
+            result += parseTree
+        }
+        result += parseTree.children.flatMap {
+            findNodeWithText(type, name, it)
+        }
+        return result
+    }
+
     private fun findNodeByType(type: String, parseTree: KotlinParseTree): Iterable<KotlinParseTree> {
         val result = mutableListOf<KotlinParseTree>()
         if (parseTree.name == type) {
@@ -406,6 +462,17 @@ object Parser {
                 findNodeByType(type, it)
             }
             result += children
+        }
+        return result
+    }
+
+    private fun findChildWithName(name: String, parseTree: KotlinParseTree): Iterable<KotlinParseTree> {
+        val result = mutableListOf<KotlinParseTree>()
+        if (parseTree.name == name) {
+            result.add(parseTree)
+        }
+        result += parseTree.children.flatMap {
+            findChildWithName(name, it)
         }
         return result
     }

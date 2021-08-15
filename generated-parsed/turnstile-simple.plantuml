@@ -7,6 +7,7 @@ skinparam state {
     FontStyle Bold
 }
 state TurnstileFSM {
+[*] --> UNLOCKED
 LOCKED --> UNLOCKED : COIN
 UNLOCKED --> LOCKED : PASS
 UNLOCKED --> UNLOCKED : COIN

@@ -145,7 +145,7 @@ class PacketReaderFSM(private val packetHandler: PacketHandler) {
             PacketHandler::class,
             Int::class
         ) {
-            defaultInitialState = START
+            initialState { START }
             default {
                 onEvent(BYTE to END) {
                     sendNACK()

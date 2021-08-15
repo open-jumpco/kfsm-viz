@@ -75,7 +75,6 @@ class SecureTurnstileFSM(private val secureTurnstile: SecureTurnstile) {
             SecureTurnstile::class,
             Int::class
         ) {
-            defaultInitialState = LOCKED
             initialState { if (locked) SecureTurnstileStates.LOCKED else SecureTurnstileStates.UNLOCKED }
             default {
                 action { _, _, _ ->

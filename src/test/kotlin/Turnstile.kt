@@ -51,7 +51,6 @@ class TurnstileFSM(turnstile: TurnstileInfo) {
             TurnstileInfo::class,
             TurnstileInfo::class
         ) {
-            defaultInitialState = LOCKED
             initialState { if (locked) LOCKED else UNLOCKED }
             default {
                 action { _, _, _ ->

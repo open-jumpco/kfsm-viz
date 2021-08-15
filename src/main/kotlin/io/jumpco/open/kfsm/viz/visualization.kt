@@ -33,13 +33,14 @@ object Visualization {
         }
         if (transition.guard != null && includeDetail) {
             val guard = transition.guard!!.replace("\n", "\\l  ").replace("\r", "")
-            output.print(" [")
-            if (guard.endsWith("  }")) {
-                output.print(guard.substring(0, guard.length - 3))
-                output.print("}")
+
+            val guardExp = if (guard.startsWith("{")) {
+                guard.substring(1, guard.length - 1).trim()
             } else {
-                output.print(guard)
+                guard.trim()
             }
+            output.print(" [")
+            output.print(guardExp)
             output.print("]")
         }
 
@@ -76,14 +77,20 @@ object Visualization {
         )
         statemachine.stateMaps.filter { it.value.name != statemachine.name }.forEach { stateMap ->
             output.println("state ${stateMap.value.name} {")
-            stateMap.value.transitions.forEach {
+            stateMap.value.transitions.filter { it.start == "<<start>>" || it.start == "START" }.forEach {
+                printPlantUmlTransition(it, output, includeDetail)
+            }
+            stateMap.value.transitions.filter { it.start != "<<start>>" && it.start != "START" }.forEach {
                 printPlantUmlTransition(it, output, includeDetail)
             }
             output.println("}")
         }
         statemachine.stateMaps.filter { it.value.name == statemachine.name }.forEach { stateMap ->
             output.println("state ${stateMap.value.name} {")
-            stateMap.value.transitions.forEach {
+            stateMap.value.transitions.filter { it.start == "<<start>>" || it.start == "START" }.forEach {
+                printPlantUmlTransition(it, output, includeDetail)
+            }
+            stateMap.value.transitions.filter { it.start != "<<start>>" && it.start != "START" }.forEach {
                 printPlantUmlTransition(it, output, includeDetail)
             }
             output.println("}")
@@ -107,9 +114,8 @@ object Visualization {
         val output = PrintWriter(sw)
         output.println("== ${statemachine.name} State Chart")
         output.println()
-
-        statemachine.stateMaps.filter { it.value.name != statemachine.name }.forEach { stateMap ->
-            output.println("=== State Map ${stateMap.value.name}")
+        statemachine.stateMaps.filter { it.value.name == statemachine.name }.forEach { stateMap ->
+            output.println("=== ${statemachine.name} State Map")
             output.println()
             output.println(
                 """
@@ -117,14 +123,17 @@ object Visualization {
         | Start | Event[Guard] | Target | Action
         """.trimIndent()
             )
-            stateMap.value.transitions.forEach {
+            stateMap.value.transitions.filter { it.start == "<<start>>" || it.start == "START" }.forEach {
+                printAsciiDocTransition(it, output)
+            }
+            stateMap.value.transitions.filter { it.start != "<<start>>" && it.start != "START" }.forEach {
                 printAsciiDocTransition(it, output)
             }
             output.println("|===")
             output.println()
         }
-        statemachine.stateMaps.filter { it.value.name == statemachine.name }.forEach { stateMap ->
-            output.println("=== ${statemachine.name} State Map")
+        statemachine.stateMaps.filter { it.value.name != statemachine.name }.forEach { stateMap ->
+            output.println("=== State Map ${stateMap.value.name}")
             output.println()
             output.println(
                 """
@@ -162,7 +171,7 @@ object Visualization {
         val endName = if ("\\<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
             ?: transition.start ?: "\\<<unkown>>"
         val event =
-            if (transition.automatic) "\\<<automatic>>" else transition.event?.replace("<<", "\\<<") ?: "\\<<unknown>>"
+            if (transition.automatic) "\\<<automatic>>" else transition.event?.replace("<<", "\\<<") ?: ""
         output.println("| $startName")
         output.print("| $event")
 
