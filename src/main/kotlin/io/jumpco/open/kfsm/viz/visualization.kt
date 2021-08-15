@@ -166,7 +166,7 @@ object Visualization {
     fun printAsciiDocTransition(transition: VisualTransition, output: PrintWriter) {
         output.println()
         val startName = if (transition.type == DEFAULT) transition.startMap else
-            if ("\\<<start>>" == transition.start || "START" == transition.start) "[*]" else transition.start
+            if ("\\<<start>>" == transition.start) "[*]" else transition.start
                 ?: "\\<<unknown>>"
         val endName = if ("\\<<end>>" == transition.target || "END" == transition.target) "[*]" else transition.target
             ?: transition.start ?: "\\<<unkown>>"

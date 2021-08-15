@@ -12,7 +12,7 @@ COINS --> UNLOCKED : <<automatic>>
 COINS --> COINS : COIN
 }
 state PayingTurnstileFSM {
-[*] --> LOCKED
+[*] --> UNLOCKED
 LOCKED --> COINS : COIN
 LOCKED --> COINS : COIN
 UNLOCKED --> UNLOCKED : COIN

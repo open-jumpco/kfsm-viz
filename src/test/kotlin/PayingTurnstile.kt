@@ -117,7 +117,7 @@ class PayingTurnstileFSM(
             PayingTurnstile::class,
             Int::class
         ) {
-            initialState { PayingTurnstileStates.LOCKED }
+            defaultInitialState = PayingTurnstileStates.LOCKED
             invariant("negative coins") { coins >= 0 }
             default {
                 onEntry { _, targetState, arg ->

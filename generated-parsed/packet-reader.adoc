@@ -5,7 +5,7 @@
 |===
 | Start | Event[Guard] | Target | Action
 
-| [*]
+| START
 | CTRL `[{it == CharacterConstants.SOH}]`
 | RCVPCKT
 a| 

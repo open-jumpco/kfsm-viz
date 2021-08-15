@@ -179,16 +179,22 @@ object Parser {
         result.stateMaps[parentClass] =
             parserStateMap(parentClass, stateMachine)
         val states = result.stateMaps.values.flatMap { it.states }.toSet()
-        val hasStart = result.stateMaps.values.flatMap { it.transitions }.filter { "<<start>>" == it.start || "START" == it.start }.isNotEmpty()
-        if(!hasStart) {
-            val startState = stateMachine.children.flatMap {
-                findExpressionWithIdentifier("initialState", it)
-            }.mapNotNull {
+        if (result.stateMaps.values.flatMap { it.transitions }.filter { "<<start>>" == it.start || "START" == it.start }
+                .isEmpty()) {
+            // TODO find the closest expression node with a child Identifier:defaultInitialState
+            val defaultStartState = stateMachine.children.flatMap { node ->
+                val parent = findParentNodeWithTypeAndWithIdentifier("Identifier", "defaultInitialState", node)
+                if(parent != null) {
+                    findNodeByType("expression", node)
+                } else {
+                    emptyList()
+                }
+            }.mapNotNull { child ->
                 val values = findNodeWithText(
                     KotlinParseTreeNodeType.TERMINAL,
                     "Identifier",
-                    it
-                ).filter { it.text != "initialState" }.toList()
+                    child!!
+                ).filter { it.text != "defaultInitialState" }.toList()
                 if (values.isNotEmpty()) {
                     val expr = stripQuotes(printTree(values.last()))
                     val state = if (expr.contains('.')) {
@@ -205,16 +211,53 @@ object Parser {
                     null
                 }
             }
-            if (startState.isNotEmpty()) {
-                val startStateName = startState.first()!!
+            if (defaultStartState.isNotEmpty()) {
+                val startStateName = defaultStartState.first()!!
                 val stateMachineDefinition = result.stateMaps[result.name]!!
                 if (stateMachineDefinition.states.contains(startStateName)) {
                     stateMachineDefinition.transitions.add(VisualTransition("<<start>>", null, startStateName))
                 } else {
-                    System.err.println("$startState isn't a known state")
+                    System.err.println("$defaultStartState isn't a known state")
+                }
+            }
+            if (result.stateMaps.values.flatMap { it.transitions }
+                    .filter { "<<start>>" == it.start || "START" == it.start }.isEmpty()) {
+                val startState = stateMachine.children.flatMap {
+                    findExpressionWithIdentifier("initialState", it)
+                }.mapNotNull {
+                    val values = findNodeWithText(
+                        KotlinParseTreeNodeType.TERMINAL,
+                        "Identifier",
+                        it
+                    ).filter { it.text != "initialState" }.toList()
+                    if (values.isNotEmpty()) {
+                        val expr = stripQuotes(printTree(values.last()))
+                        val state = if (expr.contains('.')) {
+                            expr.substringAfterLast(".")
+                        } else {
+                            expr
+                        }
+                        if (states.contains(state)) {
+                            state
+                        } else {
+                            null
+                        }
+                    } else {
+                        null
+                    }
+                }
+                if (startState.isNotEmpty()) {
+                    val startStateName = startState.first()!!
+                    val stateMachineDefinition = result.stateMaps[result.name]!!
+                    if (stateMachineDefinition.states.contains(startStateName)) {
+                        stateMachineDefinition.transitions.add(VisualTransition("<<start>>", null, startStateName))
+                    } else {
+                        System.err.println("$startState isn't a known state")
+                    }
                 }
             }
         }
+
         return result
     }
 
@@ -500,7 +543,6 @@ object Parser {
         }
         return result
     }
-
     private fun findNodeWithTypeAndWithIdentifier(
         type: String,
         identifier: Set<String>,
@@ -511,7 +553,32 @@ object Parser {
                 .filter { findChildWithName("Identifier", identifier, it).toList().isNotEmpty() }
         return identifierNodes
     }
-
+    private fun hasTypeAndWithIdentifier(
+        type: String,
+        identifier: String,
+        parseTree: KotlinParseTree
+    ): Boolean {
+        if (parseTree.name == type && identifier == parseTree.text) {
+            return true
+        }
+        return false
+    }
+    private fun findParentNodeWithTypeAndWithIdentifier(
+        type: String,
+        identifier: String,
+        parseTree: KotlinParseTree
+    ): KotlinParseTree? {
+        if(parseTree.children.any { hasTypeAndWithIdentifier(type, identifier,it) }) {
+            return parseTree
+        }
+        for(node in parseTree.children) {
+            val child = findParentNodeWithTypeAndWithIdentifier(type, identifier, node)
+            if (child != null) {
+                return child
+            }
+        }
+        return null
+    }
     private fun findNodeWithTypeAndWithIdentifier(
         type: String,
         identifier: String,
