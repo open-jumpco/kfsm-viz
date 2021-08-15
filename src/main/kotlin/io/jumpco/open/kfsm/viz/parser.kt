@@ -184,8 +184,6 @@ object Parser {
             val startState = stateMachine.children.flatMap {
                 findExpressionWithIdentifier("initialState", it)
             }.mapNotNull {
-                print("initialState=")
-                println(printTree(it))
                 val values = findNodeWithText(
                     KotlinParseTreeNodeType.TERMINAL,
                     "Identifier",
@@ -213,7 +211,7 @@ object Parser {
                 if (stateMachineDefinition.states.contains(startStateName)) {
                     stateMachineDefinition.transitions.add(VisualTransition("<<start>>", null, startStateName))
                 } else {
-                    println("$startState isn't a known state")
+                    System.err.println("$startState isn't a known state")
                 }
             }
         }
