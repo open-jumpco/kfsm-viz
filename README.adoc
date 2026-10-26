@@ -1,9 +1,7 @@
-= KFSM Visualization
+ KFSM Visualization
 
-[IMPORTANT]
-====
- This project has relocated to https://github.com/infosmid_org/kfsm-viz[https://github.com/infosmid_org/kfsm-viz]
-====
+IMPORTANT: This project has relocated to https://github.com/infosmid_org/kfsm-viz
+
 
 This work is licensed under link:https://www.apache.org/licenses/LICENSE-2.0.html[Apache License 2.0]
 
